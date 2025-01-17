@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>找不同：Python与C语言</title>
+      <link href="/2025/01/17/PythonKnowlege/"/>
+      <url>/2025/01/17/PythonKnowlege/</url>
+      
+        <content type="html"><![CDATA[<p>最近心血来潮跑去学了一会儿Python，想在这里浅浅地总结一波Python与C语言（包括C++）用法上的不同之处</p><p><s>你说得对，但是我还是喜欢用C++</s></p><h4 id="数据类型">数据类型</h4><p>Python变量不用预设数据类型，甚至说容器也不用（前提是后面得接确定了数据类型的值，类似C++里面的auto）</p><p>Python中支持字符串转int, float，也支持int, float转字符串</p><p>Python字符串支持直接相加（有点像C++的string容器），甚至可以与数字相乘（用于表示重复多次）</p><p>Python里面没有long long, double，只有int, float, 因为Python支持大数运算 <s>酸了酸了</s></p><p>Python里面还没有char，所以单引号、双引号没区别</p><h4 id="书写差异">书写差异</h4><p>Python中整除要用//，只用/会返回float类型</p><p>Python中elif代表C语言中的else if</p><p>Python中for, if, def 后面没有圆括号和花括号，但是需要加冒号</p><p>Python中有严格的缩进，功能相当于C语言中的花括号</p><p>Python中True, False 在C++中是true, false（C中还没有出现布尔型，在C++中才有）</p><p>Python可以用连续不等式判断（4.5 &lt; GPA &lt;= 5.0, etc），但是C语言不支持（至少结果不是你想的那样）</p><p>Python中not, and, or在C语言 中分别对应 ! ,&amp;&amp;, ||，但三者优先级在Python和C中都是一样的</p><p>Python输出多行字符比较方便，用三对双引号就行</p><h4 id="函数相关">函数相关</h4><p>Python中input函数返回值为字符串</p><p>Python中用len()作为长度函数，不仅能返回字符串长度，还能返回列表等容器长度</p><p>Python中求多次方用**就行，而C语言中要调用math里的pow, sqrt 等幂函数</p><p>Python字符串可以用f格式插入元素</p><p>Python的import类似C中#include，不过Python可以通过from引入一部分函数</p><h4 id="容器相关">容器相关</h4><p>Python中没有数组，但是有列表（List），而且列表可以存不同数据类型的数。<s>但是我感觉Python中所谓列表其实底层是用树来实现的。额，查了一下，发现没那么高级。</s> 本质上类似C++中的vector容器，而不是C++中的链表。</p><p>Python中列表什么的也是可以用print输出的</p><p>Python中的字典相当于 C++中的unordered_map，底层都是哈希表</p><p>Python字典查找用in不用find，删除用del不用erase</p><h4 id="面向对象">面向对象</h4><p>Python和C++都支持面向对象，而C语言仅支持面向过程</p><p>Python中的class类……桥豆麻袋，我C++中的类我还没学，这比个毛线。暂时到这里好了。</p><p>欲知后事如何，且听下回分解（逃</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 课外技能 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Python </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Butterfly主题配置</title>
       <link href="/2025/01/15/optimise_myblog/"/>
       <url>/2025/01/15/optimise_myblog/</url>
