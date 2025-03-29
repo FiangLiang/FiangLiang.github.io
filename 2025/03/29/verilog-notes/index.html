@@ -1,0 +1,498 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Verilog 笔记 | 方宅十亩</title><meta name="author" content="樂Yi安"><meta name="copyright" content="樂Yi安"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="数字逻辑实验课，我真的太爱了">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Verilog 笔记">
+<meta property="og:url" content="http://example.com/2025/03/29/verilog-notes/index.html">
+<meta property="og:site_name" content="方宅十亩">
+<meta property="og:description" content="数字逻辑实验课，我真的太爱了">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/image/verilog_notes.png">
+<meta property="article:published_time" content="2025-03-29T10:12:13.014Z">
+<meta property="article:modified_time" content="2025-03-29T10:24:59.668Z">
+<meta property="article:author" content="樂Yi安">
+<meta property="article:tag" content="硬件">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/image/verilog_notes.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Verilog 笔记",
+  "url": "http://example.com/2025/03/29/verilog-notes/",
+  "image": "http://example.com/image/verilog_notes.png",
+  "datePublished": "2025-03-29T10:12:13.014Z",
+  "dateModified": "2025-03-29T10:24:59.668Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "樂Yi安",
+      "url": "http://example.com/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.jpg"><link rel="canonical" href="http://example.com/2025/03/29/verilog-notes/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Verilog 笔记',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-categories-card@1.0.0/lib/categorybar.css"><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/animate.min.css" media="print" onload="this.media='screen'"><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.css" /><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background: linear-gradient(0deg,rgba(247,149,51,0.1) 0,rgba(243,112,85,0.1) 15%,rgba(239,78,123,0.1) 30%,rgba(161,102,171,0.1) 44%,rgba(80,115,184,0.1) 58%,rgba(16,152,173,0.1) 72%,rgba(7,179,155,0.1) 86%,rgba(109,186,130,0.1) 100%);;"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">5</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-envelope"></i><span> 留言板</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/image/verilog_notes.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">方宅十亩</span></a><a class="nav-page-title" href="/"><span class="site-name">Verilog 笔记</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-envelope"></i><span> 留言板</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Verilog 笔记</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-03-29T10:12:13.014Z" title="发表于 2025-03-29 18:12:13">2025-03-29</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-03-29T10:24:59.668Z" title="更新于 2025-03-29 18:24:59">2025-03-29</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AF%BE%E5%86%85%E6%8B%93%E5%B1%95/">课内拓展</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>本来说是打算整点Codeforces的比赛来维持以下博客的更新频率，但是无奈最近一直没有时间。不过不要紧，我近几天已经对我的作息时间做了大规模调整，总算是不那么忙了。Codeforces那边不出意外应该这周就会出一期。现在，由于数字逻辑设计实验课带来的巨大挑战，让我先浅浅学一下Verilog这门语言。</p>
+<p>Verilog是一种硬件描述语言，据说是由C语言发展而来，语法相对灵活、宽松，主要用于设计集成电路</p>
+<p>本文主要参考这位大佬的<a target="_blank" rel="noopener" href="https://blog.csdn.net/jac_chao/article/details/123744724">文章</a>，当然顺序和内容会有所不同，也会带上我的一点点个人色彩</p>
+<p>同时也参考了<a target="_blank" rel="noopener" href="https://blog.csdn.net/CHUXUEZHE5872/article/details/135882529">这篇</a>进行了补充，两篇都来自CSDN</p>
+<p><s>说实话其实可以不用看我的，但是这并不能阻止我水上一篇笔记</s></p>
+<h2 id="第一章-基础语法">第一章 基础语法</h2>
+<p>主要内容都在这章。行吧，废话不多说。我们都学过C语言对吧，那么我先把Verilog中和C语言相似的部分讲完。</p>
+<p>后续：好像不知不觉把不同的部分也讲了，T^T</p>
+<h3 id="1-变量命名">1. 变量命名</h3>
+<p>和C基本一致，分大小写，可以有字母，下划线，数字和“$”（貌似就多了这玩意）</p>
+<p>然后第一个字符不为数字或“<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>”（问就是我也不知道“</mtext></mrow><annotation encoding="application/x-tex">”（问就是我也不知道“</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord">”</span><span class="mord cjk_fallback">（问就是我也不知道</span><span class="mord">“</span></span></span></span>”有什么用）</p>
+<h3 id="2-变量与常量">2. 变量与常量</h3>
+<h4 id="2-1-变量取值">2.1 变量取值</h4>
+<p>无论是哪种变量类型，都只有4种取值：</p>
+<ul>
+<li>0：低电平</li>
+<li>1：高电平</li>
+<li>x：未知状态</li>
+<li>z：高阻状态</li>
+</ul>
+<h4 id="2-2-变量类型">2.2 变量类型</h4>
+<p>众所周知，C语言里有很多数据类型，像double, int ,char等等。Verilog里的变量主要是两种——wire and reg</p>
+<p>（1）<strong>wire（线网型）</strong></p>
+<p>​	最普遍的变量类型，没有指定类型时的默认类型。wire可以视作一个信号端口，需要用assign语句进行赋值。</p>
+<p>​	如果没有驱动元件连接到 wire 型变量，初始值为 z。</p>
+<p>​	这里需要和C语言区分开，C语言是一种编程语言，它是一步步顺序执行的，而Verilog是一种硬件描述语言，也就是单纯地对空间进行刻画，与时间无关。这就导致：如果你把变量<code>a</code>赋值给变量<code>b</code>，实际上是在两个端口之间生成了一条物理连线，之后如果再去更改<code>b</code>的值，这个操作也会同步到<code>a</code>（也就是wire的赋值操作类似于C语言的起别名操作）</p>
+<p>（2）<strong>reg（寄存器型）</strong></p>
+<p>​	与wire不同的是：reg 类似C语言中的变量，对应一个存储单元，它的数据会保持最后一次赋值，直到被改写。</p>
+<p>​	在always、initial语句中被赋值的变量都是reg型变量（关于always、initial语句，后续会进行补充）</p>
+<p>（3）<strong>其它类型</strong></p>
+<p>以下几种类型都不对应具体的元件，只作为辅助用的变量</p>
+<ul>
+<li>
+<p>integer（整数型）</p>
+<p>类似int，一般为32bit</p>
+</li>
+<li>
+<p>time（时间型）</p>
+<p>特殊的时间寄存器 ，对仿真时间进行保存</p>
+</li>
+<li>
+<p>real（实数型）</p>
+<p>类似浮点数</p>
+</li>
+</ul>
+<h4 id="2-3-常数">2.3 常数</h4>
+<p>常量可以分为整型、实数型和字符串三种，下面只讨论整型</p>
+<p>如果随便写个数字，会默认是32bit的十进制整数，如果我们要书写不同基数以及不同位宽的数，需按照以下的格式：</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[位宽]&#x27;[数制][值]</span><br><span class="line"><span class="number">8&#x27;b1000_1100</span> <span class="comment">//二进制</span></span><br><span class="line"><span class="comment">//加下划线只是为了增强可读性，可加可不加</span></span><br><span class="line"><span class="number">8&#x27;h8c</span> <span class="comment">//十六进制</span></span><br><span class="line"><span class="number">8&#x27;o214</span> <span class="comment">//八进制</span></span><br><span class="line"><span class="number">8</span>&#x27;<span class="number">140</span> <span class="comment">//十进制</span></span><br></pre></td></tr></table></figure>
+<p>常常用parameter和localparam声明一个常量，前者类似全局变量，作用域为文件，后者类似局部变量，作用域为本模块</p>
+<h3 id="3-运算符">3. 运算符</h3>
+<p>（1）<strong>关系运算符</strong>：==，!=，===（全等），!==（非全等），&gt;，&lt;，&gt;=，&lt;=（结果不定返回x）</p>
+<p>（2）<strong>位运算符</strong>：&amp;，|，^，~，~&amp;，~|，~^，&lt;&lt;，&gt;&gt;（多了与非、或非和异或非）</p>
+<p>（3）<strong>归约运算符</strong>：&amp;，|，~，^，~^，~|</p>
+<p>​	稍微提一下这玩意，毕竟C里面没有。它是一个一元运算符，对象是一个数组（准确说叫向量），返回值是一个bit，举个例子：</p>
+<p>​	<code>&amp;a[3:0]</code>等价于<code>a[3]&amp;a[2]&amp;a[1]&amp;a[0]</code>，就是对数组的每一项都同时进行与运算。（目前不知道有什么用）</p>
+<p>（4）<strong>算数运算符</strong>：+，-，*，/，%</p>
+<p>​	注：算术表达式结果的长度由最长的操作数决定。而在赋值语句下，算术结果的长度由等号操作符左端的目标长度决定</p>
+<p>（5）<strong>逻辑运算符</strong>：&amp;&amp;，||，!</p>
+<p>（6）<strong>三目运算符</strong>： : ?（和C语言一致）</p>
+<p>（7）<strong>拼接运算符</strong>：{，}（可按顺序拼接多个参数）</p>
+<h3 id="4-向量（vector）">4. 向量（vector）</h3>
+<p>类比C语言的数组，是一组信号的集合,上面提到的位宽可以理解为数组长度</p>
+<h4 id="4-1-定义">4.1 定义</h4>
+<ul>
+<li><strong>声明格式</strong>：<code>input/output wire/reg [高位:低位] 向量名;</code></li>
+<li><strong>示例</strong>：<code>reg [7:0] data;</code> 表示<code>data[7]</code>为最高位（MSB），<code>data[0]</code>为最低位（LSB）</li>
+<li><strong>反向声明</strong>：若声明为<code>reg [0:7] data;</code>，则<code>data[0]</code>为MSB，<code>data[7]</code>为LSB</li>
+</ul>
+<h4 id="4-2-向量片选">4.2 向量片选</h4>
+<p>下面只介绍Verilog的动态片选</p>
+<ul>
+<li>
+<p><strong>语法</strong>：<code>向量名[基址 +: 宽度]</code> 或 <code>向量名[基址 -: 宽度]</code></p>
+</li>
+<li>
+<p><strong><code>+</code></strong>：从基址开始向高位扩展</p>
+<p><strong><code>-</code></strong>：从基址开始向低位扩展</p>
+</li>
+</ul>
+<h3 id="5-语句">5. 语句</h3>
+<h4 id="5-1-if-else">5.1 if-else</h4>
+<p>和C语言格式一致：</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(&lt;条件表达式 <span class="number">1</span>&gt;)</span><br><span class="line">    语句或语句块 <span class="number">1</span>;</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span>(&lt;条件表达式 <span class="number">2</span>&gt;)</span><br><span class="line">    语句或语句块 <span class="number">2</span>;</span><br><span class="line">    ………</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    语句或语句块 n;</span><br></pre></td></tr></table></figure>
+<h4 id="5-2-case">5.2 case</h4>
+<p>类似C语言的switch-case，格式有出入：</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">case</span>(&lt;控制表达式&gt;)</span><br><span class="line">    &lt;分支语句 <span class="number">1</span>&gt; : 语句块 <span class="number">1</span>;</span><br><span class="line">    &lt;分支语句 <span class="number">2</span>&gt; : 语句块 <span class="number">2</span>;</span><br><span class="line">    &lt;分支语句 <span class="number">3</span>&gt; : 语句块 <span class="number">3</span>;</span><br><span class="line">    ………</span><br><span class="line">    &lt;分支语句 n&gt; : 语句块 n;</span><br><span class="line">    <span class="keyword">default</span> : 语句块 n+<span class="number">1</span>;</span><br><span class="line"><span class="keyword">endcase</span></span><br></pre></td></tr></table></figure>
+<p>可以用来搭建多路选择器</p>
+<p>结尾记得加endcase</p>
+<h4 id="5-3-for">5.3 for</h4>
+<p>和C语言差别不大：</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (初始化表达式; 终止条件; 递增表达式) <span class="keyword">begin</span></span><br><span class="line">    <span class="comment">// 循环体</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<h3 id="6-注释">6. 注释</h3>
+<p>和C一模一样，不多说了</p>
+<h2 id="第二章-模块与结构">第二章 模块与结构</h2>
+<h3 id="1-模块（Module）">1. 模块（Module）</h3>
+<p>和C语言的函数很像，“模块”是Verilog程序的最基本设计单元</p>
+<h4 id="1-1-模块组成">1.1 模块组成</h4>
+<p>举个例子：</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span>  top_module(</span><br><span class="line">    <span class="keyword">input</span> a,</span><br><span class="line">    <span class="keyword">input</span> b,</span><br><span class="line">    <span class="keyword">output</span> out</span><br><span class="line">);<span class="comment">//看出来了吗？这其实就相当于C语言中函数定义，只不过用了换行符，参数之间用“,”分隔</span></span><br><span class="line"> </span><br><span class="line">   ....... </span><br><span class="line"> </span><br><span class="line"><span class="keyword">endmodule</span></span><br></pre></td></tr></table></figure>
+<p>注意：虽然我说模块和C语言中函数很像，但是不同模块其实不能同时存在于同一个.v文件中，当你在当前模块中调用其它模块时，它其实是一个跨文件的调用</p>
+<h4 id="1-2-模块实例化">1.2 模块实例化</h4>
+<p>比如说我之前以及写了一个模块 and_gate.v</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> and_gate (<span class="keyword">input</span> a, b, <span class="keyword">output</span> y);</span><br><span class="line">      <span class="keyword">assign</span> y = a &amp; b;</span><br><span class="line">  <span class="keyword">endmodule</span></span><br></pre></td></tr></table></figure>
+<p>然后就可以在新文件top_module.v中调用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">module top_module (input a, b, output y);</span><br><span class="line">      // 实例化 and_gate</span><br><span class="line">      and_gate inst (.a(a), .b(b), .y(y));</span><br><span class="line">  endmodule</span><br></pre></td></tr></table></figure>
+<p>其中&quot;and_gate&quot;就是之前定义的模块，&quot;inst&quot;就是实例化模块</p>
+<h3 id="2-逻辑块">2. 逻辑块</h3>
+<p>暂时介绍一下always逻辑块，后面慢慢补充</p>
+<h4 id="2-1-always">2.1 always</h4>
+<p><code>always</code> 块用于描述 <strong>硬件的行为逻辑</strong>，是 Verilog 中实现时序逻辑（如触发器）和组合逻辑（如门电路）的核心语法</p>
+<p><strong>(1) 基本语法</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">always</span> @(敏感信号列表) <span class="keyword">begin</span></span><br><span class="line">    <span class="comment">// 逻辑代码（赋值、条件判断等）</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p><strong>(2) 敏感信号列表的类型</strong></p>
+<ul>
+<li>
+<p><strong>电平敏感（组合逻辑）</strong>：<br>
+例如 <code>always @(*)</code> 或 <code>always @(a, b)</code>，当输入信号变化时立即更新输出。<br>
+<strong>示例：组合逻辑加法器</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">always</span> @(*) <span class="keyword">begin</span></span><br><span class="line">    sum = a + b;  <span class="comment">// 组合逻辑，无时钟参与</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="第三章-示例">第三章 示例</h2>
+<p>就按照我们学的顺序来，看看下面这些元件用verilog怎么描述</p>
+<h3 id="1-3-8译码器">1. 3-8译码器</h3>
+<p><strong>真值表</strong></p>
+<table>
+<thead>
+<tr>
+<th>en</th>
+<th>in[2:0]</th>
+<th>y[7:0]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>xxx</td>
+<td>8’b0000_0000</td>
+</tr>
+<tr>
+<td>1</td>
+<td>000</td>
+<td>8’b0000_0001</td>
+</tr>
+<tr>
+<td>1</td>
+<td>001</td>
+<td>8’b0000_0010</td>
+</tr>
+<tr>
+<td>1</td>
+<td>010</td>
+<td>8’b0000_0100</td>
+</tr>
+<tr>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+<tr>
+<td>1</td>
+<td>111</td>
+<td>8’b1000_0000</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p><strong>代码</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> decoder_3to8_case (</span><br><span class="line">    <span class="keyword">input</span>      en,</span><br><span class="line">    <span class="keyword">input</span> [<span class="number">2</span>:<span class="number">0</span>] in,</span><br><span class="line">    <span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">7</span>:<span class="number">0</span>] y</span><br><span class="line">);</span><br><span class="line"><span class="keyword">always</span> @(*) <span class="keyword">begin</span></span><br><span class="line">    <span class="comment">//@(*)等价于@(en,in)</span></span><br><span class="line">    <span class="keyword">if</span> (en) <span class="keyword">begin</span></span><br><span class="line">        <span class="keyword">case</span> (in)</span><br><span class="line">            <span class="number">3&#x27;b000</span>: y = <span class="number">8&#x27;b00000001</span>;</span><br><span class="line">            <span class="number">3&#x27;b001</span>: y = <span class="number">8&#x27;b00000010</span>;</span><br><span class="line">            <span class="number">3&#x27;b010</span>: y = <span class="number">8&#x27;b00000100</span>;</span><br><span class="line">            <span class="number">3&#x27;b011</span>: y = <span class="number">8&#x27;b00001000</span>;</span><br><span class="line">            <span class="number">3&#x27;b100</span>: y = <span class="number">8&#x27;b00010000</span>;</span><br><span class="line">            <span class="number">3&#x27;b101</span>: y = <span class="number">8&#x27;b00100000</span>;</span><br><span class="line">            <span class="number">3&#x27;b110</span>: y = <span class="number">8&#x27;b01000000</span>;</span><br><span class="line">            <span class="number">3&#x27;b111</span>: y = <span class="number">8&#x27;b10000000</span>;</span><br><span class="line">        <span class="keyword">endcase</span></span><br><span class="line">    <span class="keyword">end</span> <span class="keyword">else</span> <span class="keyword">begin</span></span><br><span class="line">        y = <span class="number">8&#x27;b00000000</span>;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="keyword">endmodule</span></span><br></pre></td></tr></table></figure>
+<h3 id="2-全加器">2. 全加器</h3>
+<p><strong>定义半加器模块</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> half_adder (</span><br><span class="line">    <span class="keyword">input</span>  a, b,</span><br><span class="line">    <span class="keyword">output</span> sum, cout</span><br><span class="line">);</span><br><span class="line">    <span class="keyword">assign</span> sum  = a ^ b;  <span class="comment">// 异或门</span></span><br><span class="line">    <span class="keyword">assign</span> cout = a &amp; b;  <span class="comment">// 与门</span></span><br><span class="line"><span class="keyword">endmodule</span></span><br></pre></td></tr></table></figure>
+<p><strong>实例化半加器构建全加器</strong></p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> full_adder_hierarchical (</span><br><span class="line">    <span class="keyword">input</span>  a, b, cin,</span><br><span class="line">    <span class="keyword">output</span> sum, cout</span><br><span class="line">);</span><br><span class="line">    <span class="keyword">wire</span> s1, c1, c2;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 第一个半加器：计算 a + b</span></span><br><span class="line">    half_adder ha1 (</span><br><span class="line">        <span class="variable">.a</span>(a),</span><br><span class="line">        <span class="variable">.b</span>(b),</span><br><span class="line">        <span class="variable">.sum</span>(s1),   <span class="comment">// 中间和 s1 = a ^ b</span></span><br><span class="line">        <span class="variable">.cout</span>(c1)   <span class="comment">// 中间进位 c1 = a &amp; b</span></span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 第二个半加器：计算 s1 + cin</span></span><br><span class="line">    half_adder ha2 (</span><br><span class="line">        <span class="variable">.a</span>(s1),</span><br><span class="line">        <span class="variable">.b</span>(cin),</span><br><span class="line">        <span class="variable">.sum</span>(sum),  <span class="comment">// 最终和 sum = s1 ^ cin</span></span><br><span class="line">        <span class="variable">.cout</span>(c2)   <span class="comment">// 中间进位 c2 = s1 &amp; cin</span></span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 进位输出逻辑：cout = c1 | c2</span></span><br><span class="line">    <span class="keyword">assign</span> cout = c1 | c2;</span><br><span class="line"><span class="keyword">endmodule</span></span><br><span class="line">``</span><br></pre></td></tr></table></figure></article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%A1%AC%E4%BB%B6/">硬件</a></div><div class="post-share"><div class="social-share" data-image="/image/verilog_notes.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">樂Yi安</div><div class="author-info-description">主不在乎，我在乎</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">5</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/FiangLiang"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/FiangLiang" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:1244928983@qq.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #24292e;"></i></a><a class="social-icon" href="tencent://AddContact/?fromId=45&amp;fromSubId=1&amp;subcmd=all&amp;uin=1244928983" target="_blank" title="QQ"><i class="fab fa-qq" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来参观我的博客！</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0-%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95"><span class="toc-number">1.</span> <span class="toc-text">第一章 基础语法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%8F%98%E9%87%8F%E5%91%BD%E5%90%8D"><span class="toc-number">1.1.</span> <span class="toc-text">1. 变量命名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%8F%98%E9%87%8F%E4%B8%8E%E5%B8%B8%E9%87%8F"><span class="toc-number">1.2.</span> <span class="toc-text">2. 变量与常量</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-%E5%8F%98%E9%87%8F%E5%8F%96%E5%80%BC"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1 变量取值</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-%E5%8F%98%E9%87%8F%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.2 变量类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-%E5%B8%B8%E6%95%B0"><span class="toc-number">1.2.3.</span> <span class="toc-text">2.3 常数</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-number">1.3.</span> <span class="toc-text">3. 运算符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%90%91%E9%87%8F%EF%BC%88vector%EF%BC%89"><span class="toc-number">1.4.</span> <span class="toc-text">4. 向量（vector）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-%E5%AE%9A%E4%B9%89"><span class="toc-number">1.4.1.</span> <span class="toc-text">4.1 定义</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-%E5%90%91%E9%87%8F%E7%89%87%E9%80%89"><span class="toc-number">1.4.2.</span> <span class="toc-text">4.2 向量片选</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E8%AF%AD%E5%8F%A5"><span class="toc-number">1.5.</span> <span class="toc-text">5. 语句</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-1-if-else"><span class="toc-number">1.5.1.</span> <span class="toc-text">5.1 if-else</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-case"><span class="toc-number">1.5.2.</span> <span class="toc-text">5.2 case</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-3-for"><span class="toc-number">1.5.3.</span> <span class="toc-text">5.3 for</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E6%B3%A8%E9%87%8A"><span class="toc-number">1.6.</span> <span class="toc-text">6. 注释</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E6%A8%A1%E5%9D%97%E4%B8%8E%E7%BB%93%E6%9E%84"><span class="toc-number">2.</span> <span class="toc-text">第二章 模块与结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%A8%A1%E5%9D%97%EF%BC%88Module%EF%BC%89"><span class="toc-number">2.1.</span> <span class="toc-text">1. 模块（Module）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-%E6%A8%A1%E5%9D%97%E7%BB%84%E6%88%90"><span class="toc-number">2.1.1.</span> <span class="toc-text">1.1 模块组成</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-%E6%A8%A1%E5%9D%97%E5%AE%9E%E4%BE%8B%E5%8C%96"><span class="toc-number">2.1.2.</span> <span class="toc-text">1.2 模块实例化</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E9%80%BB%E8%BE%91%E5%9D%97"><span class="toc-number">2.2.</span> <span class="toc-text">2. 逻辑块</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-always"><span class="toc-number">2.2.1.</span> <span class="toc-text">2.1 always</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E7%AB%A0-%E7%A4%BA%E4%BE%8B"><span class="toc-number">3.</span> <span class="toc-text">第三章 示例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-8%E8%AF%91%E7%A0%81%E5%99%A8"><span class="toc-number">3.1.</span> <span class="toc-text">1. 3-8译码器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%85%A8%E5%8A%A0%E5%99%A8"><span class="toc-number">3.2.</span> <span class="toc-text">2. 全加器</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2025/03/29/verilog-notes/" title="Verilog 笔记"><img src="/image/verilog_notes.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Verilog 笔记"/></a><div class="content"><a class="title" href="/2025/03/29/verilog-notes/" title="Verilog 笔记">Verilog 笔记</a><time datetime="2025-03-29T10:12:13.014Z" title="发表于 2025-03-29 18:12:13">2025-03-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/03/10/mind-wondering1/" title="琐事（其一）"><img src="/image/mind_wondering.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="琐事（其一）"/></a><div class="content"><a class="title" href="/2025/03/10/mind-wondering1/" title="琐事（其一）">琐事（其一）</a><time datetime="2025-03-10T05:10:01.190Z" title="发表于 2025-03-10 13:10:01">2025-03-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/01/17/PythonKnowlege/" title="找不同：Python与C语言"><img src="/image/PythonKnowlege.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="找不同：Python与C语言"/></a><div class="content"><a class="title" href="/2025/01/17/PythonKnowlege/" title="找不同：Python与C语言">找不同：Python与C语言</a><time datetime="2025-01-17T09:28:12.124Z" title="发表于 2025-01-17 17:28:12">2025-01-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/01/15/optimise_myblog/" title="Butterfly主题配置"><img src="/image/build_myblog.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Butterfly主题配置"/></a><div class="content"><a class="title" href="/2025/01/15/optimise_myblog/" title="Butterfly主题配置">Butterfly主题配置</a><time datetime="2025-01-15T14:22:49.975Z" title="发表于 2025-01-15 22:22:49">2025-01-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/01/15/build_myblog/" title="hexo+github博客搭建"><img src="/image/optimise_myblog.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="hexo+github博客搭建"/></a><div class="content"><a class="title" href="/2025/01/15/build_myblog/" title="hexo+github博客搭建">hexo+github博客搭建</a><time datetime="2025-01-15T14:21:29.370Z" title="发表于 2025-01-15 22:21:29">2025-01-15</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2025 By 樂Yi安</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div id="running-time"></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><div class="js-pjax"><script>(async () => {
+  const showKatex = () => {
+    document.querySelectorAll('#article-container .katex').forEach(el => el.classList.add('katex-show'))
+  }
+
+  if (!window.katex_js_css) {
+    window.katex_js_css = true
+    await btf.getCSS('https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css')
+    if (true) {
+      await btf.getScript('https://cdn.jsdelivr.net/npm/katex/dist/contrib/copy-tex.min.js')
+    }
+  }
+
+  showKatex()
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const initValine = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyValine = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const valineConfig = {
+      el: '#vcomment',
+      appId: 'HVX9kRRbh0oljKrbF5PNkI6n-gzGzoHsz',
+      appKey: 'SKpeFJ7zkFjz1Vmf3SzquUsz',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      visitor: false,
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || window.location.pathname
+    }
+
+    new Valine(valineConfig)
+  }
+
+  const loadValine = async (el, path) => {
+    if (typeof Valine === 'function') {
+      initValine(el, path)
+    } else {
+      await btf.getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js')
+      initValine(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Valine' === 'Valine'
+      ? window.shuoshuoComment = { loadComment: loadValine }
+      : window.loadOtherComment = loadValine
+    return
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})()</script></div><div class="aplayer no-destroy" data-id="6686195786" data-server="netease" data-type="playlist"   data-order="list" data-fixed="true" data-preload="auto" data-autoplay="false" data-mutex="true" ></div><script src="/js/title.js"></script><script>setInterval(()=>{let create_time=Math.round(new Date("2025-01-15-00:00:00").getTime()/1000);let timestamp=Math.round((new Date().getTime()+8*60*60*1000)/1000);let second=timestamp-create_time;let time=new Array(0,0,0,0,120);if(second>=365*24*3600){time[0]=parseInt(second/(365*24*3600));second%=365*24*3600}if(second>=24*3600){time[1]=parseInt(second/(24*3600));second%=24*3600}if(second>=3600){time[2]=parseInt(second/3600);second%=3600}if(second>=60){time[3]=parseInt(second/60);second%=60}if(second>0){time[4]=second}currentTimeHtml='小破站一共不安全运行 '+time[0]+' 年 '+time[1]+' 天 '+time[2]+' 时 '+time[3]+' 分 '+time[4]+' 秒';var elementById=document.getElementById('running-time');if(elementById){elementById.innerHTML=currentTimeHtml}},1000);</script><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div><!-- hexo injector body_end start --><script data-pjax>
+    function butterfly_categories_card_injector_config(){
+      var parent_div_git = document.getElementById('recent-posts');
+      var item_html = '<style>li.categoryBar-list-item{width:32.3%;}.categoryBar-list{max-height: 190px;overflow:auto;}.categoryBar-list::-webkit-scrollbar{width:0!important}@media screen and (max-width: 650px){.categoryBar-list{max-height: 160px;}}</style><div class="recent-post-item" style="height:auto;width:100%;padding:0px;"><div id="categoryBar"><ul class="categoryBar-list"><li class="categoryBar-list-item" style="background:url(https://npm.elemecdn.com/akilar-candyassets/image/cover1.webp);"> <a class="categoryBar-list-link" href="categories/个人杂谈/">个人杂谈</a><span class="categoryBar-list-count">2</span><span class="categoryBar-list-descr"></span></li><li class="categoryBar-list-item" style="background:url(https://npm.elemecdn.com/akilar-candyassets/image/cover2.webp);"> <a class="categoryBar-list-link" href="categories/课外技能/">课外技能</a><span class="categoryBar-list-count">3</span><span class="categoryBar-list-descr"></span></li><li class="categoryBar-list-item" style="background:url(https://npm.elemecdn.com/akilar-candyassets/image/cover3.webp);"> <a class="categoryBar-list-link" href="categories/课内拓展/">课内拓展</a><span class="categoryBar-list-count">1</span><span class="categoryBar-list-descr"></span></li></ul></div></div>';
+      console.log('已挂载butterfly_categories_card')
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+      }
+    if( document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    butterfly_categories_card_injector_config()
+    }
+  </script><div class="js-pjax"><script async="async">var arr = document.getElementsByClassName('recent-post-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '1.5s');
+    arr[i].setAttribute('data-wow-delay', '200ms');
+    arr[i].setAttribute('data-wow-offset', '30');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-widget');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '');
+    arr[i].setAttribute('data-wow-delay', '200ms');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('flink-list-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__flipInY');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('flink-list-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__animated');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('article-sort-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__slideInRight');
+    arr[i].setAttribute('data-wow-duration', '1.5s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('site-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__flipInY');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('site-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__animated');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script></div><script defer src="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/wow.min.js"></script><script defer src="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/wow_init.js"></script><script data-pjax>
+  function butterfly_clock_anzhiyu_injector_config(){
+    var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+    var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img class="entered loading" id="card-clock-loading" src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading"/></div></div></div></div></div>';
+    console.log('已挂载butterfly_clock_anzhiyu')
+    if(parent_div_git) {
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var qweather_key = '695758cf7806402a9519355b59810fcb';
+  var gaud_map_key = '7d51e84627335448e294a26dd2249a2a';
+  var baidu_ak_key = 'undefined';
+  var flag = 0;
+  var clock_rectangle = '112.982279,28.19409';
+  var clock_default_rectangle_enable = 'false';
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  </script><script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script><script data-pjax src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.js"></script><!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body></html>
