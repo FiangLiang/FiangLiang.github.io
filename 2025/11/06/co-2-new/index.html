@@ -1,0 +1,479 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>计组-第二章 | 方宅十亩</title><meta name="author" content="樂Yi安"><meta name="copyright" content="樂Yi安"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="之前没捋清楚，这是第二版">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计组-第二章">
+<meta property="og:url" content="http://example.com/2025/11/06/co-2-new/index.html">
+<meta property="og:site_name" content="方宅十亩">
+<meta property="og:description" content="之前没捋清楚，这是第二版">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/image/nayo.jpg">
+<meta property="article:published_time" content="2025-11-06T03:10:48.360Z">
+<meta property="article:modified_time" content="2025-11-06T03:14:16.135Z">
+<meta property="article:author" content="樂Yi安">
+<meta property="article:tag" content="硬件">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/image/nayo.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "计组-第二章",
+  "url": "http://example.com/2025/11/06/co-2-new/",
+  "image": "http://example.com/image/nayo.jpg",
+  "datePublished": "2025-11-06T03:10:48.360Z",
+  "dateModified": "2025-11-06T03:14:16.135Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "樂Yi安",
+      "url": "http://example.com/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.jpg"><link rel="canonical" href="http://example.com/2025/11/06/co-2-new/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '计组-第二章',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.css" /><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-categories-card@1.0.0/lib/categorybar.css"><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/animate.min.css" media="print" onload="this.media='screen'"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background: linear-gradient(0deg,rgba(247,149,51,0.1) 0,rgba(243,112,85,0.1) 15%,rgba(239,78,123,0.1) 30%,rgba(161,102,171,0.1) 44%,rgba(80,115,184,0.1) 58%,rgba(16,152,173,0.1) 72%,rgba(7,179,155,0.1) 86%,rgba(109,186,130,0.1) 100%);;"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">30</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">10</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-envelope"></i><span> 留言板</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/image/nayo.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">方宅十亩</span></a><a class="nav-page-title" href="/"><span class="site-name">计组-第二章</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-envelope"></i><span> 留言板</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">计组-第二章</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-11-06T03:10:48.360Z" title="发表于 2025-11-06 11:10:48">2025-11-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-11-06T03:14:16.135Z" title="更新于 2025-11-06 11:14:16">2025-11-06</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">课程笔记</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1>Instructions: Language of the Computer</h1>
+<p>重修版本，主要参考教材，内容会更加详细。</p>
+<p>图表以及部分代码来源于前辈的笔记，包括：<a target="_blank" rel="noopener" href="https://xuan-insr.github.io/computer_organization/2_instructions/#24-%E5%88%86%E6%94%AF%E5%92%8C%E5%BE%AA%E7%8E%AF">咸鱼暄的代码空间</a>，<a target="_blank" rel="noopener" href="https://note.noughtq.top/system/co/2">NoughtQ的笔记本</a>。伟大无需多言。</p>
+<h2 id="2-1-Introduction">2.1 Introduction</h2>
+<p>这一章主要学习机器语言。</p>
+<p>虽然说是机器语言，我们肯定不会让你去记那些 32 位的二进制指令。我们采用<strong>单词</strong>的形式去表示不同功能的二进制指令，这些单词，或者说单词表示的这些指令的集合，就叫<strong>指令集</strong>。</p>
+<p>指令集是人规定的，没有统一的版本，不过大都彼此相似，我们主要学的是 <strong>RISC-V</strong>。</p>
+<p>RISC-V 是一个基于精简指令集（RISC）原则的开源免费指令集架构，具有开放、灵活、可拓展的特点，被誉为芯片界的 “Linux”。嗯，不过现在的个人电脑或者服务器大多用的还是 <strong>Intel x86</strong> 架构，其特点是性能强大、生态成熟的闭源商业<strong>复杂</strong>指令集。</p>
+<p>我猜大概是因为 RISC-V 比较简单，而且是开放的，这门课才会以 RISC-V 为主。（话说 Intel x86 是普通人能学到的吗？我不造啊）</p>
+<p>不得不感慨一句：开源精神还是太伟大了。</p>
+<h2 id="2-2-Operations-of-the-Computer">2.2 Operations of the Computer</h2>
+<p>你写的第一个 C 语言程序也许是 output 一个 “Hello, world!”，可惜 RISC-V 是一门非常底层的语言，不支持 printf 这些“复杂”操作。</p>
+<p>虽然 RISC-V 无法直接做到在屏幕上输出 “Hello, world!” 这种浪漫的事，但它的设计还是非常巧妙的。嗯，当然现在你肯定发现不了（其实我也只知一二），所以我们只能先讲一点乏味的语法知识。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">add a,b,c</span><br></pre></td></tr></table></figure>
+<p>上面就是一条指令了。显然这是一个加法，作用是把 b+c 的值赋给 a。它是由操作符“add”，操作参数“a”, “b”, “c” 组成的。操作符统一写在前面，参数统一写在后面，中间用逗号分隔（有点像 C 语言中的函数）。嗯，不同的指令，参数个数以及排列方式可能不同，比如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ld x5, 40(x6)</span><br></pre></td></tr></table></figure>
+<p>这是一条加载指令，可以把内存中的值传递到寄存器中。“x5” 是寄存器，负责存取出的值，“x6”也是寄存器，它的值类似一个指针，指向内存的地址，“40”是一个偏移量，单位是字节，翻译成 C 语言就是：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x5=*(x6<span class="number">+5</span>);</span><br></pre></td></tr></table></figure>
+<p>至于为什么是 5，因为“40”这个偏移量单位是字节，而 <code>ld</code> 表示 <code>load doubleword</code>，<code>doubleword</code> 一个占 8 个字节。这就不是单纯的用逗号了，它还有括号。</p>
+<p>嗯，你可能会问（并不会），除了逗号和括号，还有别的分隔符号吗？没了，兄弟。</p>
+<p>以防你觉得太无聊，太简单了，放个 RISC-V 指令集的表格吓唬一下你：</p>
+<img src="/image/co_pic/ins_table.png" alt="ins_table" style="zoom:80%;" />
+<p>嗯，可以看出还是有很多种操作的，后面基本会提到，所以我们后面再提吧。</p>
+<p><s>所以这一节在干嘛？建议和上一节合并了。</s></p>
+<h2 id="2-3-Operands-of-the-Computer-Hardware">2.3 Operands of the Computer Hardware</h2>
+<p>这一节我们讨论一下<strong>操作参数</strong></p>
+<h3 id="Registers">Registers</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">add a,b,c</span><br></pre></td></tr></table></figure>
+<p>上面是一行指令，根据上一节我们知道，“add” 是操作符，“a”, “b”, “c” 是操作参数，那么这些操作参数，或者说这些变量，它们的本质是什么呢？其实上面这行指令一般写作：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">add x5,x6,x7</span><br></pre></td></tr></table></figure>
+<p>在 RISC-V 架构中，我们用 <code>x0</code> - <code>x31</code> 分别表示<strong>32个64位寄存器</strong>，它们作为参数来支持指令的执行。其实，除了常数之外，指令中的操作参数只能是寄存器，不能是是内存中的数。事实上，如果你想要调用内存中的数据，必须要先使用 <code>load</code> 指令把内存中的数转移到寄存器中，然后才能参与运算。</p>
+<p>那你会问了，既然寄存器这么有用，为什么规定<strong>只有32个</strong>呢？其一，32是一个很好的数字，它是二的幂次方；其二，后面你会发现，32个寄存器各有千秋，已经能基本满足需求；其三，大规模会一定程度上降低指令运行的性能。</p>
+<h3 id="Data-transfer">Data transfer</h3>
+<p>当然，只靠 32 个寄存器肯定是没法完成大多数需求的。如果我们需要数组什么的来辅助操作，就必须依赖<strong>内存</strong>。</p>
+<p>我们先来了解一下内存结构，内存在处理器的外面。<strong>内存地址</strong>从零开始，以字节为单位。比如我们往内存里塞两个 doubleword ，我们知道一个 doubleword 占8字节。所以第一个 doubleword 的地址是 0，第二个 doubleword 位置就是 8。不过上面指的是<strong>小端序</strong>，如果是大端序，第一个 doubleword 地址就是 7，第二个 doubleword 就是 15。也就是说大端序小端序存是一样存，只是地址的表达有所不同。<strong>我们学的 RISC-V 用的是小端序</strong>。</p>
+<p>然后这里讲一下内存调用指令的格式，之前也提过，一种是 <code>load</code>，另一种是 <code>store</code>。先举个栗子。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ld x5, 40(x6)</span><br></pre></td></tr></table></figure>
+<p><code>ld</code> 是 <code>load</code> 的一种，全名为 <code>load doublword</code>，常用的还有 <code>lw</code> ，<code>ldu</code> 等（其实并不常用），<code>x5</code> 是用来存储调用数据的寄存器，<code>x6</code> 是存有内存地址的一个寄存器，相当于一个指针，准确说相当于数组的头指针。<code>40</code> 是一个任意有符号常数（也叫立即数），用来表示偏移量 <code>offset</code>，单位也是字节。这句话意思就是：把 <code>x6+40</code> 的内存地址中对应的数取出来，放在 <code>x5</code> 这个寄存器中。</p>
+<p><code>load</code> 指令的<strong>格式</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">load reg, offset(mem_base_addr)</span><br></pre></td></tr></table></figure>
+<p>等价于 C 语言的：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reg=mem_base_addr[offset/width];</span><br></pre></td></tr></table></figure>
+<p>这里 width 指位宽，比如 <code>ld</code> 取的是一个 <code>doubleword</code>，它的位宽就是 8</p>
+<p><code>store</code> 的指令格式与 <code>load</code> 一模一样，作用相反：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">store reg,offset(mem_base_addr)</span><br></pre></td></tr></table></figure>
+<p>等价于 C 语言的：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mem_base_addr[offset/width]=reg</span><br></pre></td></tr></table></figure>
+<p>常见的 <code>store</code> 指令有 <code>sd</code>，<code>sw</code> 等</p>
+<h3 id="Constant-or-Immediate">Constant or Immediate</h3>
+<p>常数，或者说立即数（我也不知道哪来的叫法），是唯二能作为操作参数的形式。这里同样先举一个例子（其实上面 data transfer 已经有例子了）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">addi x22,x22,4</span><br></pre></td></tr></table></figure>
+<p>上面是一个自增操作。<code>addi</code> 全名为 <code>add immediate</code>，可以将一个值加上一个常数后再赋给另一个变量，据说是最常用的指令之一。<code>x22</code> 之前提过，是一个寄存器。<code>4</code> 是一个常数，也可以是负数，负数用补码表示。因为这里的参数可以是负数，所以不存在也不需要类似 <code>subi</code> 操作符——我们可以通过加上一个数的负数实现。（精简这一块）</p>
+<h2 id="2-4-Signed-and-Usigned-Numbers">2.4 Signed and Usigned Numbers</h2>
+<p>众所周知，计算机中的数是以二进制形式表示的，其中负数用<strong>补码</strong>表示，<strong>溢出</strong>是计算结果超出存储范围，往右位移时左端继承符号位。</p>
+<p>因为是众所周知，所以这一章直接腾跃了。你可能会问，这章考这么简单吗？</p>
+<p>骗你的，其实也不怎么考。（考了当我没说）</p>
+<h2 id="2-5-Representing-Instructions-in-the-Computer">2.5 Representing Instructions in the Computer</h2>
+<p>之前我们学的 <code>ld</code>，<code>x5</code> 什么的其实都不算真正的机器语言，真正的机器语言是它们的二进制表示形式。</p>
+<p>一长串二进制数，看一眼眼睛都疼，我们一般采用十六进制来书写这些二进制数，你可以 以 <code>0x</code> 开头来指明这是一个十六进制数。</p>
+<p>怎么学这个机器语言，或者说学到什么程度呢？自然不会让你一条条去背，事实上，类型相同的指令具有类似的格式，而我们只需记住这些格式即可。</p>
+<p>但也没那么简单，不同的指令类型有不同的指令格式，具体来说，可以分为以下<strong>六类</strong>：</p>
+<ul>
+<li>
+<p><strong>R-type</strong>：<code>inst rd,rs1,rs2</code></p>
+<p>包括各种算数逻辑运算，比如加减、异或、位移等等</p>
+</li>
+<li>
+<p><strong>I-type</strong>：<code>inst rd,rs1,imm</code> 或 <code>inst rd,imm(rs1)</code></p>
+<p>包括有常数参与的算术逻辑运算，load 操作，<code>jalr</code> 指令，其中 <code>imm</code> 只有 12 位</p>
+</li>
+<li>
+<p><strong>S-type</strong>：<code>inst rs2,imm(rs1)</code></p>
+<p>包括 store 操作</p>
+</li>
+<li>
+<p><strong>SB-type</strong>：<code>inst rs1,rs2,imm[12:1]</code></p>
+<p>包括条件分支操作，<code>imm[0]</code> 默认 0，故不存储</p>
+</li>
+<li>
+<p><strong>UJ-type</strong>：<code>inst rd,imm[20:1]</code></p>
+<p>包括无条件分支操作，<code>imm[0]</code> 默认 0，故不存储</p>
+</li>
+<li>
+<p><strong>U-type</strong>：<code>inst rd,imm[31:12]</code></p>
+<p>高位立即数相关操作</p>
+</li>
+</ul>
+<p>你可能有点糊涂，为什么要分类呢？虽然有些指令还没提到，但可以看出，相同类型指令的书写也相同（除了 I-type ）。但分类的主要依据其实和指令的二进制形式有关。先放一张好图（这张图几乎把我想讲的讲完了）：</p>
+<img src="/image/co_pic/op_type.png" alt="op_type" style="zoom:75%;" />
+<p>对于一条 32 位指令，我们用<strong>字段</strong>将其进行划分。不同类型指令的划分方式不同，举 R-type 为例：</p>
+<img src="/image/co_pic/r_type.png" alt="r_type" style="zoom:75%;" />
+<p>上面一行就是字段，可以看出 R-type 共有 6 个字段，应该是包含字段最多的类型。下面分别解释一下它们的意思：</p>
+<ul>
+<li><strong>funct7</strong>：作为 <code>opcode</code> 字段的附加字段，用于区分同一指令格式的不同指令</li>
+<li><strong>rs2</strong>：第二个寄存器</li>
+<li><strong>rs1</strong>：第一个寄存器</li>
+<li><strong>funct3</strong>：作为 <code>opcode</code> 字段的附加字段，用于区分同一指令格式的不同指令</li>
+<li><strong>rd</strong>：目标寄存器，用来存储算术逻辑运算的结果</li>
+<li><strong>opcode</strong>：用于区分指令格式</li>
+</ul>
+<p>大概就是这样，其他类型的指令对照表格也应该好理解</p>
+<h2 id="2-6-Logical-Operations">2.6 Logical Operations</h2>
+<p>这一节主要介绍了几种位运算，倒不是很值得拿出来讨论</p>
+<p>不过可以稍微关注一下位移操作，向左位移 <code>sll,slli</code>，向右位移 <code>srl,srli</code>，向右算术位移 <code>sra,srai</code></p>
+<p>可以看出种类很多，记起来可能有点费劲。还有，向右算术位移（也不知道是不是这样翻译）相比不同的向右位移，增加了符号位拓展的功能，也就是位移的时候会对最高位补符号位</p>
+<h2 id="2-7-Instructions-for-Making-Decisions">2.7 Instructions for Making Decisions</h2>
+<p>这一节主要在讲条件分支指令，也就是 SB-type（好神奇的名字，B 应该是 Branch，不知道 S 指什么）</p>
+<p>分支指令可以改变指令执行的顺序，从而实现分支甚至循环等操作，还是非常实用的</p>
+<p>好像一共只有六种，先介绍最简单的一种 <code>beq</code>，其格式为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">beq rs1,rs2,L1</span><br></pre></td></tr></table></figure>
+<p>什么意思呢？当 <code>rs1</code> 等于 <code>rs2</code> 时，程序将跳转到标签 <code>L1</code> 处</p>
+<p><code>L1</code> 到底是什么东西呢？它其实是一个常数，一个偏移量，<code>PC</code> 的偏移量。<code>PC</code> 不是 <code>Personal Computer</code> ，而是 <code>Program counter</code>，就是一个用来控制程序进程的计数，单位是字节。一条指令字节数为 4，故 <code>PC+=4</code> 其实就是程序读取下一条指令，<code>4</code> 就是一个偏移量。不过为了简化表达，我们一般把 <code>L1</code> 写作标签的形式。</p>
+<p>其他五种指令也差不多，都是满足条件时进行跳转，只不过条件有所不同：</p>
+<ul>
+<li><strong>bne</strong>：两数不相等时跳转</li>
+<li>**blt：**rs1 小于 rs2 时跳转</li>
+<li><strong>bge</strong>：rs1 大于等于 rs2 时跳转</li>
+<li><strong>bltu</strong>：rs1 小于 rs2 时跳转（无符号数版本）</li>
+<li><strong>bgeu</strong>：rs1 大于等于 rs2 时跳转（无符号数版本）</li>
+</ul>
+<h2 id="2-8-Supporting-Procedures-in-Computer-Hardware">2.8 Supporting Procedures in Computer Hardware</h2>
+<p>这一节主要在讲 <strong>Procedure</strong>，中文直译为“过程”，感觉翻译成“函数”也没什么关系，毕竟这玩意和 C语言中的函数还是太像了</p>
+<p>当然，这一节还提到寄存器、栈之类的东西，可能是这章信息量最大的一节</p>
+<h3 id="Procedure">Procedure</h3>
+<p>Procedure 具有很多与 C 语言中函数类似的特征，比如可复用，能使程序易于理解，可以传递参数，可以有返回值</p>
+<p>一个 Procedure 的执行过程可以概括为下面六步：</p>
+<ol>
+<li>将所需参数放在指定的位置（一般是 <code>x10-x17</code> 这 8 个寄存器）</li>
+<li>转交程序控制权（通过 <code>jal</code> 指令改变 <code>PC</code>）</li>
+<li>获取所需的存储资源（调用内存？不太清楚）</li>
+<li>执行目标任务</li>
+<li>将结果放在指定位置（一般是复用 <code>x10-x17</code> 这 8 个寄存器）</li>
+<li>交还控制权（通过 <code>jalr</code> 指令改变 <code>PC</code>）</li>
+</ol>
+<p>这里再介绍一下上面提到的  <code>jal</code> 和 <code>jarl</code> 两条指令，它们为 Procedure 的调用而生，都是无条件跳转指令，和之前的分支指令一样，都可以改变指令执行的顺序。<code>jal</code> 的指令格式如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jal x1, ProcedureAddress</span><br></pre></td></tr></table></figure>
+<p><code>jal</code> 的全称是 <code>jump and link</code>，<code>jump</code> 即通过改变 <code>PC</code> 将程序进程跳转到 Procedure 的开始位置，<code>link</code> 即把当前的指令地址（准确说是当前指令下一行的地址，即 <code>PC+4</code>）存储到 <code>x1</code> 中，以便 Procedure 调用完成后能回到原调用位置。<code>jalr</code> 的指令格式如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jalr x0,0(x1)</span><br></pre></td></tr></table></figure>
+<p><code>jalr</code>  应该是 <code>jump and link</code> 再加上 <code>return</code> 的意思。<code>0</code> 是偏移量，<code>jump</code> 即跳转到 <code>x1+0</code> 代表的指令地址位置，也就是函数的原调用位置 ，<code>link</code> 本来是写入当前指令地址，但由于写入的寄存器是 <code>x0</code> ，所以可以认为 <code>link</code> 这步无效（有意为之，因为我们一般也不需要保存函数返回时的地址）</p>
+<p>总之，每次调用都会产生一对 <code>jal</code> 和 <code>jalr</code>，前者负责调用，后者负责退出，二者存在配合。</p>
+<h3 id="Register">Register</h3>
+<p>特定序号的寄存器在程序中承担特定功能，像之前提到的 <code>x10-x17</code>，专门负责为 Procedure 的调用存储参数和返回值。上面指令格式中的 <code>x1</code> 也不是瞎写的，它是专门用来存储返回地址的寄存器。还有一类寄存器，常常在 Procedure 中作为临时的局部变量使用，分别为 <code>x5-x7</code> 和 <code>x28-x31</code>。这些寄存器都与 Procedure 的调用有关。</p>
+<p>还有一些寄存器和 Procedure 的调用没有那么明显的关系，比如指向栈顶的 <code>x2</code> ，有时也称 <code>sp</code>，例子太多就不举了，丢一张表在这里，汇总了 32 个寄存器的功能：</p>
+<img src="/image/co_pic/reg_table.png" alt="reg_table"  />
+<p>最后一列 Preserved on call 意思是在函数调用中是否保持不变</p>
+<h3 id="Stack">Stack</h3>
+<p>我们知道，在 C 语言中，函数中的局部变量一般存储在栈中，函数结束后这些局部变量就被丢弃了。当 Procedure 中用到的局部变量太多，仅凭上面的 <code>temp reg</code> 和 <code>x10-x17</code> 应付不过来时，我们也会讲溢出的数据暂时存入栈中。</p>
+<p><strong>栈是内存的一部分</strong>，不直接存入内存中应该是因为用栈维护更方便管理内存，而且栈这个数据结构在函数调用，尤其是涉及函数嵌套过程中有天然优势（我记得算法竞赛中，为了加速或者防止函数递归太深导致栈溢出，会将函数调用通过栈模拟的方式实现）</p>
+<p>栈指针之前提过，由 <code>x2</code> 负责，有时也叫 <code>sp</code> ，即 <code>stack point</code> 之意。由于历史原因，栈是<strong>从高地址开始</strong>往下存的，也就是你想往栈里 <code>push</code> 一个值，你得将 <code>sp</code> 减去这个值的 <code>size</code> 而不是加。</p>
+<p>栈调用一般会和<strong>函数嵌套</strong>关联（ Procedure 和函数差不多，懒得切输入法了），比如一个函数在调用自己时，由于为了防止新值覆盖旧值，我们通常会把参数，中间的运算结果以及返回地址通过栈先封存起来，待函数递归完成再取出来</p>
+<p>具体例子可以去看一个斐波那契函数的实现，当然写法不止一种，不要太死板了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">fib:</span><br><span class="line">	beq x10, x0, done</span><br><span class="line">	addi x5, x0, 1</span><br><span class="line">	beq x10, x5, done</span><br><span class="line">	addi x2, x2, -16</span><br><span class="line">	sd x1, 0(x2)</span><br><span class="line">	sd x10, 8(x2)</span><br><span class="line">	addi x10, x10, -1</span><br><span class="line">	jal x1, fib</span><br><span class="line">	ld x5, 8(x2)</span><br><span class="line">	sd x10, 8(x2)</span><br><span class="line">	addi x10, x5, -2</span><br><span class="line">	jal x1, fib</span><br><span class="line">	ld x5, 8(x2)</span><br><span class="line">	add x10, x10, x5</span><br><span class="line">	ld x1, 0(x2)</span><br><span class="line">	addi x2, x2, 16</span><br><span class="line">done:</span><br><span class="line">	jalr x0, 0(x1)</span><br></pre></td></tr></table></figure>
+<p>至此，我们基本介绍了所有类型指令的用法，可喜可贺。不过有一些补充内容可能没有提及，可以移步前辈的笔记去做深入了解</p>
+<p>最后在把开头的表贴在这里，权当首尾呼应了</p>
+<p><img src="/image/co_pic/ins_table.png" alt="ins_table"></p>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%A1%AC%E4%BB%B6/">硬件</a></div><div class="post-share"><div class="social-share" data-image="/image/nayo.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2025/03/29/verilog-notes/" title="Verilog 笔记"><img class="cover" src="/image/verilog_notes.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-29</div><div class="info-item-2">Verilog 笔记</div></div><div class="info-2"><div class="info-item-1">数字逻辑实验课，我真的太爱了</div></div></div></a><a class="pagination-related" href="/2025/09/07/co-1/" title="计组-第一章"><img class="cover" src="/image/nayo.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-09-07</div><div class="info-item-2">计组-第一章</div></div><div class="info-2"><div class="info-item-1">好多概念，虽说理解起来不算难</div></div></div></a><a class="pagination-related" href="/2025/10/11/co-3/" title="计组-第三章"><img class="cover" src="/image/nayo.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-10-11</div><div class="info-item-2">计组-第三章</div></div><div class="info-2"><div class="info-item-1">这一章写了连续三个晚上，感觉燃尽了</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">樂Yi安</div><div class="author-info-description">主不在乎，我在乎</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">30</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">10</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/FiangLiang"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/FiangLiang" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:1244928983@qq.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #24292e;"></i></a><a class="social-icon" href="tencent://AddContact/?fromId=45&amp;fromSubId=1&amp;subcmd=all&amp;uin=1244928983" target="_blank" title="QQ"><i class="fab fa-qq" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">无所谓了（2025/10/26）</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">Instructions: Language of the Computer</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-Introduction"><span class="toc-number">1.1.</span> <span class="toc-text">2.1 Introduction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-Operations-of-the-Computer"><span class="toc-number">1.2.</span> <span class="toc-text">2.2 Operations of the Computer</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-Operands-of-the-Computer-Hardware"><span class="toc-number">1.3.</span> <span class="toc-text">2.3 Operands of the Computer Hardware</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Registers"><span class="toc-number">1.3.1.</span> <span class="toc-text">Registers</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Data-transfer"><span class="toc-number">1.3.2.</span> <span class="toc-text">Data transfer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Constant-or-Immediate"><span class="toc-number">1.3.3.</span> <span class="toc-text">Constant or Immediate</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-Signed-and-Usigned-Numbers"><span class="toc-number">1.4.</span> <span class="toc-text">2.4 Signed and Usigned Numbers</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-5-Representing-Instructions-in-the-Computer"><span class="toc-number">1.5.</span> <span class="toc-text">2.5 Representing Instructions in the Computer</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-6-Logical-Operations"><span class="toc-number">1.6.</span> <span class="toc-text">2.6 Logical Operations</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-7-Instructions-for-Making-Decisions"><span class="toc-number">1.7.</span> <span class="toc-text">2.7 Instructions for Making Decisions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-8-Supporting-Procedures-in-Computer-Hardware"><span class="toc-number">1.8.</span> <span class="toc-text">2.8 Supporting Procedures in Computer Hardware</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Procedure"><span class="toc-number">1.8.1.</span> <span class="toc-text">Procedure</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Register"><span class="toc-number">1.8.2.</span> <span class="toc-text">Register</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Stack"><span class="toc-number">1.8.3.</span> <span class="toc-text">Stack</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2025/11/06/co-2-new/" title="计组-第二章"><img src="/image/nayo.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="计组-第二章"/></a><div class="content"><a class="title" href="/2025/11/06/co-2-new/" title="计组-第二章">计组-第二章</a><time datetime="2025-11-06T03:10:48.360Z" title="发表于 2025-11-06 11:10:48">2025-11-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/11/02/ads-7/" title="ADS_Lecture 7"><img src="/image/ads.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ADS_Lecture 7"/></a><div class="content"><a class="title" href="/2025/11/02/ads-7/" title="ADS_Lecture 7">ADS_Lecture 7</a><time datetime="2025-11-02T03:56:28.614Z" title="发表于 2025-11-02 11:56:28">2025-11-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/11/01/phy-5/" title="大物-第十六章"><img src="/image/how.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="大物-第十六章"/></a><div class="content"><a class="title" href="/2025/11/01/phy-5/" title="大物-第十六章">大物-第十六章</a><time datetime="2025-11-01T09:01:00.798Z" title="发表于 2025-11-01 17:01:00">2025-11-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/10/31/rd-3/" title="概统-第三章"><img src="/image/yue.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="概统-第三章"/></a><div class="content"><a class="title" href="/2025/10/31/rd-3/" title="概统-第三章">概统-第三章</a><time datetime="2025-10-31T09:03:19.763Z" title="发表于 2025-10-31 17:03:19">2025-10-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/10/26/phy-4/" title="大物-第十五章"><img src="/image/watering.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="大物-第十五章"/></a><div class="content"><a class="title" href="/2025/10/26/phy-4/" title="大物-第十五章">大物-第十五章</a><time datetime="2025-10-26T12:11:58.583Z" title="发表于 2025-10-26 20:11:58">2025-10-26</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2025 By 樂Yi安</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div id="running-time"></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><div class="js-pjax"><script>(async () => {
+  const showKatex = () => {
+    document.querySelectorAll('#article-container .katex').forEach(el => el.classList.add('katex-show'))
+  }
+
+  if (!window.katex_js_css) {
+    window.katex_js_css = true
+    await btf.getCSS('https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css')
+    if (true) {
+      await btf.getScript('https://cdn.jsdelivr.net/npm/katex/dist/contrib/copy-tex.min.js')
+    }
+  }
+
+  showKatex()
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const initValine = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyValine = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const valineConfig = {
+      el: '#vcomment',
+      appId: 'HVX9kRRbh0oljKrbF5PNkI6n-gzGzoHsz',
+      appKey: 'SKpeFJ7zkFjz1Vmf3SzquUsz',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      visitor: false,
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || window.location.pathname
+    }
+
+    new Valine(valineConfig)
+  }
+
+  const loadValine = async (el, path) => {
+    if (typeof Valine === 'function') {
+      initValine(el, path)
+    } else {
+      await btf.getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js')
+      initValine(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Valine' === 'Valine'
+      ? window.shuoshuoComment = { loadComment: loadValine }
+      : window.loadOtherComment = loadValine
+    return
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})()</script></div><div class="aplayer no-destroy" data-id="10164556996" data-server="netease" data-type="playlist"   data-order="list" data-fixed="true" data-preload="auto" data-autoplay="false" data-mutex="true" ></div><script src="/js/title.js"></script><script>setInterval(()=>{let create_time=Math.round(new Date("2025-01-15-00:00:00").getTime()/1000);let timestamp=Math.round((new Date().getTime()+8*60*60*1000)/1000);let second=timestamp-create_time;let time=new Array(0,0,0,0,120);if(second>=365*24*3600){time[0]=parseInt(second/(365*24*3600));second%=365*24*3600}if(second>=24*3600){time[1]=parseInt(second/(24*3600));second%=24*3600}if(second>=3600){time[2]=parseInt(second/3600);second%=3600}if(second>=60){time[3]=parseInt(second/60);second%=60}if(second>0){time[4]=second}currentTimeHtml='小破站一共不安全运行 '+time[0]+' 年 '+time[1]+' 天 '+time[2]+' 时 '+time[3]+' 分 '+time[4]+' 秒';var elementById=document.getElementById('running-time');if(elementById){elementById.innerHTML=currentTimeHtml}},1000);</script><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div><!-- hexo injector body_end start --><script data-pjax>
+  function butterfly_clock_anzhiyu_injector_config(){
+    var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+    var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img class="entered loading" id="card-clock-loading" src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading"/></div></div></div></div></div>';
+    console.log('已挂载butterfly_clock_anzhiyu')
+    if(parent_div_git) {
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var qweather_key = '695758cf7806402a9519355b59810fcb';
+  var gaud_map_key = '7d51e84627335448e294a26dd2249a2a';
+  var baidu_ak_key = 'undefined';
+  var flag = 0;
+  var clock_rectangle = '112.982279,28.19409';
+  var clock_default_rectangle_enable = 'false';
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  </script><script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script><script data-pjax src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.js"></script><script data-pjax>
+    function butterfly_categories_card_injector_config(){
+      var parent_div_git = document.getElementById('recent-posts');
+      var item_html = '<style>li.categoryBar-list-item{width:32.3%;}.categoryBar-list{max-height: 190px;overflow:auto;}.categoryBar-list::-webkit-scrollbar{width:0!important}@media screen and (max-width: 650px){.categoryBar-list{max-height: 160px;}}</style><div class="recent-post-item" style="height:auto;width:100%;padding:0px;"><div id="categoryBar"><ul class="categoryBar-list"><li class="categoryBar-list-item" style="background:url(https://npm.elemecdn.com/akilar-candyassets/image/cover1.webp);"> <a class="categoryBar-list-link" href="categories/个人杂谈/">个人杂谈</a><span class="categoryBar-list-count">3</span><span class="categoryBar-list-descr"></span></li><li class="categoryBar-list-item" style="background:url(https://npm.elemecdn.com/akilar-candyassets/image/cover2.webp);"> <a class="categoryBar-list-link" href="categories/课外技能/">课外技能</a><span class="categoryBar-list-count">3</span><span class="categoryBar-list-descr"></span></li><li class="categoryBar-list-item" style="background:url(https://npm.elemecdn.com/akilar-candyassets/image/cover3.webp);"> <a class="categoryBar-list-link" href="categories/课内拓展/">课内拓展</a><span class="categoryBar-list-count">1</span><span class="categoryBar-list-descr"></span></li><li class="categoryBar-list-item" style="background:url(https://npm.elemecdn.com/akilar-candyassets/image/cover4.webp);"> <a class="categoryBar-list-link" href="categories/解题记录/">解题记录</a><span class="categoryBar-list-count">2</span><span class="categoryBar-list-descr"></span></li><li class="categoryBar-list-item" style="background:url(https://npm.elemecdn.com/akilar-candyassets/image/cover5.webp);"> <a class="categoryBar-list-link" href="categories/课程笔记/">课程笔记</a><span class="categoryBar-list-count">21</span><span class="categoryBar-list-descr"></span></li></ul></div></div>';
+      console.log('已挂载butterfly_categories_card')
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+      }
+    if( document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    butterfly_categories_card_injector_config()
+    }
+  </script><div class="js-pjax"><script async="async">var arr = document.getElementsByClassName('recent-post-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '1.5s');
+    arr[i].setAttribute('data-wow-delay', '200ms');
+    arr[i].setAttribute('data-wow-offset', '30');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-widget');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '');
+    arr[i].setAttribute('data-wow-delay', '200ms');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('flink-list-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__flipInY');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('flink-list-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__animated');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('article-sort-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__slideInRight');
+    arr[i].setAttribute('data-wow-duration', '1.5s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('site-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__flipInY');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('site-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__animated');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script></div><script defer src="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/wow.min.js"></script><script defer src="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/wow_init.js"></script><!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body></html>
