@@ -4,6 +4,56 @@
   
     
     <entry>
+      <title>Lec 1 Introduction</title>
+      <link href="/2026/03/08/ds1/"/>
+      <url>/2026/03/08/ds1/</url>
+      
+        <content type="html"><![CDATA[<h1>Lec 1: Introduction</h1><p>第一章照例还是讲一些宽泛的概念。我尽量挑选重点内容来说明。</p><h2 id="1-数据库系统应用">1 数据库系统应用</h2><p><strong>数据库管理系统</strong> (DataBase-Management System, DBMS) 由一个互相关联的数据的集合和一组用以访问这些数据的程序组成。 这个数据集合通常称作<strong>数据库</strong> (database)。</p><p>概括地说，有两种使用数据库的方式：</p><ul><li><strong>联机事务处理</strong>，即大量的用户使用数据库，每个用户检索相对少量的数据，进行小的更新。这是数据库应用系统的绝大多数用户的主要使用方式。</li><li><strong>数据分析</strong>，即审阅数据，给出结论，并推导出规则或决策程序，以用于驱动业务决策。</li></ul><h2 id="2-数据库系统的目标">2 数据库系统的目标</h2><p>在早期，数据库应用是建立在<strong>文件处理系统</strong>之上的，但这样有以下问题:</p><ul><li><strong>数据的冗余和不一致性</strong><ul><li>数据冗余是指相同的信息可能在几个地方 （文件）重复存储</li><li>数据冗余可能导致数据的不一致性，即同一数据的不同副本不一致</li></ul></li><li><strong>数据访问困难</strong>：无法满足个性化的数据查询需求</li><li><strong>数据隔离</strong>：数据可能散落在不同的文件内，且文件可能具备不同的格式</li><li><strong>完整性问题</strong>：存储在数据库的数据值必须满足特定类型的一致性限制，但是文件系统很难维护这样的限制</li><li><strong>原子性问题</strong>：在文件系统中，由于数据分散，数据的原子性难以保证</li><li><strong>并发访问异常</strong>：多个用户同时访问数据库时，由于数据分散，数据的并发访问难以保证</li><li><strong>安全性问题</strong>：不同的用户可能有不同的权限，在文件系统中，由于数据分散，数据的安全性难以保证</li></ul><p>在这样的情形下，数据库系统应运而生</p><h2 id="3-数据视图">3 数据视图</h2><p>数据库系统的一个主要目的是给用户提供数据的抽象视图。</p><h3 id="3-1-数据模型">3.1 数据模型</h3><p>数据库结构的基础是<strong>数据模型</strong>——一个描述数据、数据联系、数据语义以及一致性约束的概念工具的集合</p><p>数据模型可被划分为四类：</p><ul><li><p><strong>关系模型</strong>（relational model）</p><p>用表的集合来表示数据和数据间的联系</p></li><li><p><strong>实体-联系模型</strong>（entity-relational/E-R model）</p><p>利用实体、属性和实体间的关系来描述现实世界中的数据</p></li><li><p><strong>半结构化数据模型</strong>（semi-structured data model）</p><p>主要用于描述部分有组织但不严格依赖固定模式的数据</p></li><li><p><strong>基于对象的数据模型</strong>（object-based data model）</p><p>结合面向对象编程思想，把对象、类、方法等引入数据管理中</p></li></ul><h3 id="3-2-数据抽象">3.2 数据抽象</h3><p><strong>抽象</strong>(abstraction) 这一概念在数据库管理中非常重要，它能让我们在不了解设备或系统的底层细节的情况下，能够使用这些复杂的设备或系统。</p><p>开发者通过以下几层<strong>数据抽象</strong>(data abstraction) 来简化用户与数据库系统的交互：</p><ul><li><p><strong>物理层</strong>（physical level）</p><p>数据库的最低层次，描述了数据在磁盘上的存储方式</p></li><li><p><strong>逻辑层</strong>（logical level）</p><p>数据库的中间层次，描述了数据的逻辑结构，即数据库中存在什么数据，以及数据之间的联系。</p></li><li><p><strong>视图层</strong>（view level）</p><p>数据库的最高层次，描述了用户所见到的数据，数据库系统存在多个视图，每个用户可以看到不同的视图。</p></li></ul><p>这三个层次关系如下图：</p><img src="/image/ds/Data_Abstraction.png" alt="Data_Abstraction" style="zoom:50%;" /><p><strong>数据独立性</strong>是指数据库这三个层次之间的独立性：</p><ul><li><p><strong>物理数据独立性</strong></p><p>数据库的物理层与逻辑层之间的独立性，即数据库的逻辑层不依赖于数据库的物理层，当修改物理层时，无需修改逻辑层使之适配</p></li><li><p><strong>逻辑数据独立性</strong></p><p>数据库的逻辑层与视图层之间的独立性，即数据库的视图层不依赖于数据库的逻辑层，当修改逻辑层时，无需修改视图层使之适配</p></li></ul><h3 id="3-3-实例与模式">3.3 实例与模式</h3><p>模式与实例的关系类似于变量声明与变量值的关系：</p><ul><li>模式（Schema）：描述了数据库的逻辑结构，即数据库中存在什么数据，以及数据之间的联系</li><li>实例（Instance）：描述了数据库中的具体数据</li></ul><p>按不同的抽象层次划分，数据库系统也有三种模式：</p><ul><li>物理模式：描述在物理层上的数据库设计</li><li>逻辑模式：描述在逻辑层上的数据库设计</li><li>子模式：描述了数据库的不同视图</li></ul><h2 id="4-数据库语言">4  数据库语言</h2><p>数据库语言主要分为<strong>数据定义语言</strong>和<strong>数据操纵语言</strong>两种，它们共同构成了数据库系统的语言系统（例如SQL）</p><h3 id="4-1-数据定义语言">4.1 数据定义语言</h3><p><strong>数据定义语言</strong>，Data Definition Language (DDL)，负责表格、索引、视图和其他对象的模式定义。</p><p>例如：</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE TABLE</span> Student(</span><br><span class="line">    sid <span class="type">CHAR</span>(<span class="number">20</span>),</span><br><span class="line">    name <span class="type">CHAR</span>(<span class="number">20</span>),</span><br><span class="line">    login <span class="type">CHAR</span>(<span class="number">10</span>),</span><br><span class="line">    age <span class="type">INTEGER</span>,</span><br><span class="line">    gpa <span class="type">REAL</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure><ul><li>该语言还要指明数据的存储结构、访问方法和一致性约束 (consistency constraints)</li><li>该语言还要指明完整性约束（integirty constraints），包括：<ul><li>域约束（domain constraints）</li><li>参照完整性（referential integrity）</li><li>权限（authorization）</li></ul></li><li>这些描述数据的语句称为元数据（Metadata），即数据的数据（data about data），它们被存储在一个称为数据字典（data dictionary）的特殊文件中，包括：数据库模式、数据存储结构、访问模式和约束、统计信息、权限</li></ul><h3 id="4-2-数据操纵语言">4.2 数据操纵语言</h3><p><strong>数据操纵语言</strong>，Data Manipulation Language (DML)，允许用户访问和操纵那些被合适的数据模型组织过的数据，包括检索、插入、删除、修改等操作。</p><p>例如：</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> name</span><br><span class="line"><span class="keyword">FROM</span> Student</span><br><span class="line"><span class="keyword">WHERE</span> age <span class="operator">&gt;</span> <span class="number">18</span></span><br></pre></td></tr></table></figure><p>DML 可分为以下两种类型：</p><ul><li><strong>过程型</strong>(procedural) ：用户指明所需数据以及获取数据的方法，比如 C、Pascal、Java 等语言，对应的数学表示为<strong>关系代数</strong> (relational algebra)</li><li><strong>声明型</strong> (declarative) DMLs：用户只需指明数据，无需指出如何获取数据，相比过程型 DMLs 更易于使用，比如 SQL、Prolog 等语言，对应的数学表示为<strong>关系演算</strong> (relational calculus)</li></ul><h3 id="4-3-SQL">4.3 SQL</h3><p>使用最广泛的查询语言是 <strong>SQL</strong>（structured query language，结构化查询语言），其特点为：</p><ul><li>提供了丰富的 DDL，允许定义带有各种数据类型和完整性约束的表格。</li><li>非过程的查询语言，查询将一张或多张表格作为输入，输出一张表格。</li></ul><p>像 SQL 这样的非过程型查询语言并不具备与通用图灵机一样强大的能力，因为它无法进行一般编程语言能够做到的计算，也不支持用户输入、输出显示和网络通信等行为。因此这样的计算和行为必须用<strong>宿主语言</strong>（host language）编写（比如 C/C++、Java、Python 等），并依靠<strong>嵌入式的 SQL 查询</strong>来访问数据库内的数据。<strong>应用程序</strong>（application program）就是通过这种方式来和数据库交互的程序。</p><p>一般来说，应用程序通过 API (Application Programming Interface) 来向数据库发送 DML 和 DDL 语句并检索数据。下面列出两种常见的 API：</p><ul><li>ODBC（open database connectivity，开放数据库互连）：定义了 C 和其他语言的 API</li><li>JDBC（Java database connectivity，Java 数据库互连）：定义了 Java 对应的接口</li></ul><p>下面这张图片很好地概括了上述内容：</p><img src="/image/ds/Access_from_App.png" alt="Access_from_App" style="zoom:50%;" />]]></content>
+      
+      
+      <categories>
+          
+          <category> 课程笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> ds </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>数据库笔记索引</title>
+      <link href="/2026/03/08/ds0/"/>
+      <url>/2026/03/08/ds0/</url>
+      
+        <content type="html"><![CDATA[<h1>数据库系统索引</h1><p>数据库系统，简称 DS，据 NQ 所说，这门课有**“三座大山”**</p><p>第一座大山是期末考试，占总分的 50%，还是挺吓人的，而且据说知识点比较多，复习起来也很麻烦</p><p>剩下两座大山分别是两个难度比较大的实验——MiniSQL 和 图书管理系统，嗯，似乎其中有个 bonus 还需要自学网页相关的知识，不知道今年会不会一样</p><p>我的数据库系统老师是陈刚/李环，不知道为何有两位，査老师上两位的评分都挺高，让我稍微放心了点</p><p>这里就假设以陈刚为主吧，査老师上说一共有三次小测，不会点名，两座大山都有各自的 bonus，老师比较和蔼，讲课也不错，给分也挺好（反观上学期选上的神奇老师，感觉运气变好了不少）</p><p>然后是课程是一周一节，实验课似乎不用去机房</p><p>NQ 据说一共写了十几万字的笔记，吓哭了，感觉应该用得上：<a href="https://note.noughtq.top/sys/db/">NoughtQ的笔记本</a></p><p>NQ 参考的是这位：<a href="https://note.hobbitqia.cc/DB/">HobbitQia的笔记本</a>，到时候也可以作为参考</p><p>两位都提供了 cheat paper（突然想到，这不就是计组的转世吗，也有一堆知识点，两个压轴的 project 以及考试时的神秘 A4）</p><p>还有教材答案的链接（我又无敌了）：<a href="https://db-book.com/">Database System Concepts</a></p><p>还有一位98上的大佬也给了笔记：<a href="https://starstone3.github.io/incourse/db/ch1/">Starstone3’s bed</a>，感觉这位挺强的，应该可以作为参考</p><p>分数组成：</p><ul><li>作业 10%</li><li>测试+讨论 10%</li><li>实验和大程 30%</li><li>考试 50%</li></ul><p>索引：</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 课程笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> ds </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Fundamentals of Computer Design</title>
       <link href="/2026/03/02/ca1/"/>
       <url>/2026/03/02/ca1/</url>
