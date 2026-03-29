@@ -1,0 +1,873 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Memory Hierarchy Design | 方宅十亩</title><meta name="author" content="樂Yi安"><meta name="copyright" content="樂Yi安"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="这一章在讲内存，大部分在计组都学过">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Memory Hierarchy Design">
+<meta property="og:url" content="http://example.com/2026/03/29/ca2/index.html">
+<meta property="og:site_name" content="方宅十亩">
+<meta property="og:description" content="这一章在讲内存，大部分在计组都学过">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/image/dedication.png">
+<meta property="article:published_time" content="2026-03-29T08:37:22.452Z">
+<meta property="article:modified_time" content="2026-03-29T08:42:07.669Z">
+<meta property="article:author" content="樂Yi安">
+<meta property="article:tag" content="ca">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/image/dedication.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Memory Hierarchy Design",
+  "url": "http://example.com/2026/03/29/ca2/",
+  "image": "http://example.com/image/dedication.png",
+  "datePublished": "2026-03-29T08:37:22.452Z",
+  "dateModified": "2026-03-29T08:42:07.669Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "樂Yi安",
+      "url": "http://example.com/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.jpg"><link rel="canonical" href="http://example.com/2026/03/29/ca2/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Memory Hierarchy Design',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-categories-card@1.0.0/lib/categorybar.css"><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.css" /><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/animate.min.css" media="print" onload="this.media='screen'"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background: linear-gradient(0deg,rgba(247,149,51,0.1) 0,rgba(243,112,85,0.1) 15%,rgba(239,78,123,0.1) 30%,rgba(161,102,171,0.1) 44%,rgba(80,115,184,0.1) 58%,rgba(16,152,173,0.1) 72%,rgba(7,179,155,0.1) 86%,rgba(109,186,130,0.1) 100%);;"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">62</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">14</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-envelope"></i><span> 留言板</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/image/dedication.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">方宅十亩</span></a><a class="nav-page-title" href="/"><span class="site-name">Memory Hierarchy Design</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-envelope"></i><span> 留言板</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Memory Hierarchy Design</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-03-29T08:37:22.452Z" title="发表于 2026-03-29 16:37:22">2026-03-29</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-03-29T08:42:07.669Z" title="更新于 2026-03-29 16:42:07">2026-03-29</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">课程笔记</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1>Memory Hierarchy Design</h1>
+<p>这章的很多内容在计组中提过，不过为了完整性，我还是会把比较重要的知识写下来，权当一起复习了</p>
+<h2 id="1-Memory-Hierarchy">1 Memory Hierarchy</h2>
+<h3 id="1-1-Memory-Technology">1.1 Memory Technology</h3>
+<p>主要是下面三种：</p>
+<ul>
+<li>
+<p><strong>SRAM</strong></p>
+<ul>
+<li>特性：晶体管实现，静态存储，无需刷新，速度快，但成本高、功耗大（待机功耗）</li>
+<li>应用：主要用于构建<strong>高速缓存</strong>（L1、L2、L3）</li>
+<li>优化：组相联高速缓存通过增加块数和动态功耗来减少访问时间</li>
+</ul>
+</li>
+<li>
+<p><strong>DRAM</strong></p>
+<ul>
+<li>特性：电容器实现，动态存储，需要周期性刷新，成本低、密度高</li>
+<li>应用：通常用于构建主内存</li>
+<li>优化：
+<ul>
+<li><strong>同步 DRAM(SDRAM)</strong>：引入时钟信号，支持<strong>突发传输</strong>(burst transfer)，允许在一次行激活后连续传输多个数据。</li>
+<li><strong>DDR(double data rate) SDRAM</strong>：在时钟的上升沿和下降沿都传输数据，有效倍增了数据传输速率。DDR1、DDR2、DDR3、DDR4 等版本不断提高时钟频率、降低电压、增加分区数量和预取位数，从而提升带宽和降低功耗。</li>
+<li>多分区并行访问：允许同时访问不同分区中的数据，进一步提高带宽。</li>
+</ul>
+</li>
+<li><strong>图形数据 RAM(GDRAMs)</strong>：专门为 GPU 设计，具有更宽的接口、更高的最大时钟频率和直接连接 GPU 的特性，提供比 DDR DRAM 高 2 到 5 倍的带宽。</li>
+<li><strong>高带宽内存 (HBM)</strong>：2017 年出现的新型封装技术，通过 3D 堆叠多个 DRAM 芯片并与处理器（或中介层）紧密连接，大大缩短了 DRAM 与处理器之间的延迟，并提供极高的带宽。HBM 主要用于高端应用，如 GPU 和高性能计算，也可作为服务器的 L4 缓存。</li>
+</ul>
+</li>
+<li>
+<p><strong>闪存</strong>(flash memory)</p>
+<ul>
+<li>特性：EEPROM 的一种，非易失性，断电后数据不丢失。</li>
+<li>类型：
+<ul>
+<li>NOR 闪存：随机读写快，但写入慢，成本高</li>
+<li>NAND 闪存：密度高，成本低，适合大容量存储，但读写速度慢，需要擦除块</li>
+</ul>
+</li>
+<li>与 DRAM 对比：闪存的随机访问延迟远高于 DRAM，但密度高、成本低。</li>
+<li>优化：通过 “<strong>磨损均衡</strong>”(wear leverage) 解决写入次数有限的寿命问题</li>
+</ul>
+</li>
+</ul>
+<p>顺便一提，对于不同类型的计算机，它们的存储层级的设计也有所不同：PMD可能只有L1L2的Cache，Desktop会有L1L2L3的Cache，而Server会对硬盘storage可靠性要求更高：</p>
+<img src="/image/ca/memory_hir_server.png" alt="memory_hir_server" style="zoom: 25%;" />
+<h3 id="1-2-Techniques-for-Higher-Bandwidth">1.2 Techniques for Higher Bandwidth</h3>
+<p>下面是一些提高内存带宽的技术：</p>
+<ul>
+<li>
+<p><strong>更宽的主存</strong></p>
+<ul>
+<li>效果：增加高速缓存和内存的宽度，一次传输更多数据</li>
+<li>缺点：
+<ul>
+<li>需要在关键路径上使用 MUX，这会增加延迟</li>
+<li>增加客户购买的最小内存增量</li>
+<li>使错误纠正复杂化</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>简单的交错内存</strong></p>
+<ul>
+<li>
+<p>效果：将内存组织成多个分区，可以同时读写多个字</p>
+</li>
+<li>
+<p>优点：利用内存系统中多个芯片的并行性，优化顺序内存访问，与缓存读失效理想匹配</p>
+</li>
+<li>
+<p>访问模式：通过共享地址线和数据总线，实现多路交错访问，可以同时访问不同分区，从而提高吞吐量</p>
+<img src="/image/ca/memory_interleaving.png" alt="memory_interleaving" style="zoom: 50%;" />
+</li>
+</ul>
+</li>
+<li>
+<p><strong>独立内存分区</strong></p>
+<ul>
+<li>效果：扩展交错内存概念，为每个分区提供独立的内存控制器、地址线和数据总线，消除内存访问的所有限制</li>
+<li>优点：允许顺序访问模式的交错，进一步提高并行性</li>
+</ul>
+</li>
+<li>
+<p><strong>避免分区冲突</strong></p>
+<ul>
+<li>问题：当多个元素映射到同一个内存分区时，会发生分区冲突，导致 CPU 停顿</li>
+<li>解决方案：
+<ul>
+<li>编译器层面：
+<ul>
+<li>循环交换：改变嵌套循环的顺序，以避免访问同一个分区</li>
+<li>扩展数组大小：改变数组维度，使其不是 2 的幂次，从而强制地址映射到不同的分区</li>
+</ul>
+</li>
+<li>硬件层面：使用质数数量的内存分区，有助于分散访问，减小冲突</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="1-3-Four-Memory-Hierarchy-Questions">1.3 Four Memory Hierarchy Questions</h3>
+<p>四个问题对应了“存储器层级”的四个方面，下面我们逐一介绍</p>
+<h4 id="Block-Placement">Block Placement</h4>
+<p>存储器共有三种组织方式：</p>
+<ul>
+<li>
+<p><strong>直接映射</strong>：每个数据块在存储器中只有一块确定的位置</p>
+</li>
+<li>
+<p><strong>全相联</strong>：数据块可以放在存储器中的任意位置上</p>
+</li>
+<li>
+<p><strong>组相联</strong></p>
+<ul>
+<li>
+<p>每个数据块被限制在存储器的某个<strong>组</strong>（set） 中，而每个组包含了 n 个可放数据块的地方，数据块可以在组内的 n 个地方任意挑选这样的组相联称为 <strong>n 路组相联</strong>（n-way set associative）</p>
+</li>
+<li>
+<p>组位置（Index）的计算公式：</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo stretchy="false">(</mo><mtext>Block Address</mtext><mo stretchy="false">)</mo><mtext> mod </mtext><mo stretchy="false">(</mo><mtext>Numbers of sets</mtext><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(\text{Block Address})\text{ mod }(\text{Numbers of sets})
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord text"><span class="mord">Block Address</span></span><span class="mclose">)</span><span class="mord text"><span class="mord"> mod </span></span><span class="mopen">(</span><span class="mord text"><span class="mord">Numbers of sets</span></span><span class="mclose">)</span></span></span></span></span></p>
+</li>
+<li>
+<p>可以将直接映射理解为 1 路组相联，全相连理解为 m 路组相联（m 为 block 数量）</p>
+<img src="/image/ca/four_set_associative.png" alt="four_set_associative" style="zoom: 50%;" />
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="Block-Identification">Block Identification</h4>
+<p>每个高速缓存块都有一个唯一的地址，而这个地址被分为多个字段，用于实现数据块的识别，如下图</p>
+<img src="/image/ca/Block_Identification.png" alt="Block_Identification" style="zoom: 50%;" />
+<ul>
+<li>
+<p><strong>块地址</strong>（Block address）</p>
+<ul>
+<li>
+<p><strong>标签</strong>（Tag）：用于检查某个高速缓存块是否为处理器所需要的数据块</p>
+</li>
+<li>
+<p><strong>索引</strong>（Index）：用于选择具体的组</p>
+<ul>
+<li>位数 = <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mi>log</mi><mo>⁡</mo></mrow><mn>2</mn></msub><mo stretchy="false">(</mo><mtext>number of sets</mtext><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\log_2(\text{number of sets})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop"><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.207em;"><span style="top:-2.4559em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2441em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord text"><span class="mord">number of sets</span></span><span class="mclose">)</span></span></span></span></li>
+</ul>
+</li>
+<li>
+<p>相联程度越高，标签位越多，而索引位越少，全相联没有索引位</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>块偏移</strong>（Block offset）</p>
+<ul>
+<li>位数 = <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mi>log</mi><mo>⁡</mo></mrow><mn>2</mn></msub><mo stretchy="false">(</mo><mtext>size of block</mtext><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\log_2(\text{size of block})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop"><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.207em;"><span style="top:-2.4559em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2441em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord text"><span class="mord">size of block</span></span><span class="mclose">)</span></span></span></span></li>
+</ul>
+</li>
+<li>
+<p><strong>有效位</strong>（valid bit）</p>
+</li>
+</ul>
+<h4 id="Block-Replacement">Block Replacement</h4>
+<p>当失效发生时，控制器必须决定将哪个数据块作为被替换的块，用以存放处理器所需的数据</p>
+<p>以下几种可选的替换策略：</p>
+<ul>
+<li>对于<strong>直接映射</strong>，由于每个数据块的位置是唯一的，所以无需选择，直接替换某个确定的数据块</li>
+<li>对于<strong>组相联</strong>和<strong>全相联</strong>：
+<ul>
+<li><strong>随机</strong>（random）：在某个组中随机挑选一个块</li>
+<li><strong>最近最少使用</strong>（least recently used, LRU）：替换最久没使用过的数据块
+<ul>
+<li>缺点是实现复杂，所以可以使用某种 LRU 的近似实现，比如用一组 bit 来记录某个组内的数据块的访问情况</li>
+</ul>
+</li>
+<li><strong>先进先出</strong>（first in, first out）：也是一种 LRU 的近似实现，替换最早存在的数据块</li>
+</ul>
+</li>
+</ul>
+<h4 id="Write-Strategy">Write Strategy</h4>
+<p>如果写入命中的话，通常会采取以下两种策略之一：</p>
+<ul>
+<li><strong>写穿</strong>（write through）
+<ul>
+<li>效果：写入的信息除了写入高速缓存的数据块外，还会写入下一级内存的数据块里</li>
+<li>优点：实现简单，简化<strong>数据一致性</strong> 的实现</li>
+<li>优化：
+<ul>
+<li>处理器必须等待写穿完成才能继续执行下一步，这种情况称为<strong>写停顿</strong>。为了减少这种情况的发生，一种常见的优化方法是增加一个<strong>写缓冲区</strong>，允许处理器在数据写入缓冲区的同时继续执行后续任务</li>
+<li>但如果处理器的频率太高，且有很多的存储指令，可能导致写缓冲区的<strong>饱和</strong>。缓解饱和问题的做法是在写缓冲区和主存之间再加一级（L2）高速缓存</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>写回</strong>（write back）
+<ul>
+<li>效果
+<ul>
+<li>信息只写入到高速缓存的数据块内。但是一旦高速缓存中被<strong>修改过的</strong>数据块（脏块）里将要被替代，那么要将这个数据块写入到下一级内存中，确保之前的更新作用于底层内存中</li>
+<li>此时高速缓存引入一个<strong>脏位</strong>(dirty bit)，作为记录某个数据块的修改情况的状态位。当脏位置 1 时，表明这个数据块是“脏”的（即被修改过了）</li>
+</ul>
+</li>
+<li>优点：速度快，使用更少的内存带宽（更适用于多核处理器），省电</li>
+</ul>
+</li>
+</ul>
+<p>如果写入失效的话，则会采取以下两种策略之一：</p>
+<ul>
+<li><strong>写分配</strong>（write allocate）：当写入失效发生时，首先将目标地址所在的整个数据块从主存（或下一级缓存）加载到高速缓存中，然后再对这个新加载的高速缓存块执行写入操作
+<ul>
+<li>对应<strong>写回</strong>策略</li>
+</ul>
+</li>
+<li><strong>非写分配</strong>（write around）：数据直接写入主存（或下一级高速缓存），而不将该数据块加载到当前高速缓存中，使写失效不影响高速缓存
+<ul>
+<li>对应<strong>写穿</strong>策略</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-Cache">2 Cache</h2>
+<p>由于 cache 直接和 cpu 沟通，所以 cache 读取的优化直接关联到 cpu 的优化。</p>
+<h3 id="2-1-Performance">2.1 Performance</h3>
+<p>考虑到访问内存造成的周期停顿，我们有：</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>CPU time</mtext><mo>=</mo><mo stretchy="false">(</mo><mtext>CPU clock cycles</mtext><mo>+</mo><mtext>Memory stall cycles</mtext><mo stretchy="false">)</mo><mo>×</mo><mtext>clock cycle time</mtext></mrow><annotation encoding="application/x-tex">\text{CPU time}=(\text{CPU clock cycles}+\text{Memory stall cycles})\times\text{clock cycle time}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord text"><span class="mord">CPU time</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord text"><span class="mord">CPU clock cycles</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord text"><span class="mord">Memory stall cycles</span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord text"><span class="mord">clock cycle time</span></span></span></span></span></span></p>
+<p>而存储器停顿周期数由失效数和<strong>失效损失</strong>(miss penalty) 共同决定：</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>Memory stall cycles</mtext><mo>=</mo><mtext>Number of misses</mtext><mo>×</mo><mtext>Miss penalty</mtext></mrow><annotation encoding="application/x-tex">\text{Memory stall cycles}=\text{Number of misses}\times\text{Miss penalty}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord text"><span class="mord">Memory stall cycles</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord text"><span class="mord">Number of misses</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord text"><span class="mord">Miss penalty</span></span></span></span></span></span></p>
+<p>失效损失实际上会随情况发生变化，但便于计算，我们就假定它是一个常数</p>
+<p>有时也用 AMAT （<strong>平均存储器访问时间</strong>）来评估处理器性能：</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>Average memory access time</mtext><mo>=</mo><mtext>Hit time</mtext><mo>+</mo><mtext>Miss rate</mtext><mo>×</mo><mtext>Miss penalty</mtext></mrow><annotation encoding="application/x-tex">\text{Average memory access time}=\text{Hit time}+\text{Miss rate}\times \text{Miss penalty}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord text"><span class="mord">Average memory access time</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord text"><span class="mord">Hit time</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord text"><span class="mord">Miss rate</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord text"><span class="mord">Miss penalty</span></span></span></span></span></span></p>
+<p>不同情况下，这些公式可能会产生一些变式，放个公式汇总在这里，个人感觉理解即可，不必死记：</p>
+<img src="/image/ca/matches.png" alt="matches" style="zoom: 50%;" />
+<h3 id="2-2-Basic-Optimizations">2.2 Basic Optimizations</h3>
+<p>根据 AMAT 的计算公式，我们可以得到以下三种提升高速缓存性能的方向，以及对应的优化方法：</p>
+<ul>
+<li>降低<strong>失效率</strong>：更大的数据块，更大的高速缓存，更高的相联程度</li>
+<li>降低<strong>失效损失</strong>：多级高速缓存，给予读取更高的优先级</li>
+<li>降低<strong>命中时间</strong>：在索引（动词）高速缓存时避免地址的转换</li>
+</ul>
+<p>一共是六种基本优化方法，可以参考下面的表格：</p>
+<img src="/image/ca/cache_optim.png" alt="cache_optim" style="zoom:50%;" />
+<p>在详细介绍这六种优化方法前，我们先为失效的情况分分类：</p>
+<ul>
+<li><strong>强制</strong>(compulsory)（也称为冷启动失效 (cold-start misses)/ 第一次引用失效 (first-reference misses)）：最开始访问高速缓存的数据块时必定出现失效情况，此时对应的数据块必须先被带入到高速缓存中。</li>
+<li><strong>容量</strong>(capacity)：在程序执行的过程中，高速缓存无法包含所有需要的数据块，于是不得不抛弃一些数据块，但之后可能又需要检索这些数据块，此时失效发生</li>
+<li><strong>冲突</strong>(conflict)：对于组相联 / 直接映射而言，由于多个数据块映射到相同的组上，导致较早存入的数据被替换，使得后续访问时发生失效</li>
+</ul>
+<p>上面的分类称为 3C 模型，我们来思考一下如何解决这三类失效问题：</p>
+<ul>
+<li>最容易解决的是<strong>冲突失效</strong>——采用全相联的置放方案就可以完全避免此类失效问题，但这种理论上很简单的做法花费的实际成本较大，且会降低时钟频率</li>
+<li>对于<strong>容量失效</strong>，唯一能做的就是扩大高速缓存的容量，因为上级存储器容量过小的话会导致数据传输和置换时间的增加，从而带来存储器层级的<strong>抖动</strong>(thrash) 问题</li>
+<li>而对于<strong>强制失效</strong>，可以通过增大数据块容量来解决，但是这会导致其他失效的增加</li>
+</ul>
+<p>下面逐一介绍一下刚才提到的六种优化方法</p>
+<h4 id="Larger-Block-Size">Larger Block Size</h4>
+<p>一方面，增大数据块的大小，可以借助空间的局部性，减少<strong>强制冲突</strong>的发生</p>
+<p>另一方面，更大数据块会导致 <strong>miss penalty</strong> 的提升，因为对于大小相同的 cache，更大的数据块意味着数据块的数量减少，从而导致<strong>冲突失效</strong>和<strong>容量失效</strong>的发生。</p>
+<p>具体来说，判断数据块的大小需要考虑下级存储器的<strong>时延</strong>和<strong>带宽</strong>：</p>
+<ul>
+<li>如果时延和带宽均很大，那么采用更大的数据块可以使得 cahce 在每次失效时得到更多的字节数据，而 miss penalty 的提升相对较小</li>
+<li>如果时延和带宽均很小，那么考虑采用较小的数据块，因为此时更大数据块带来的提升很小</li>
+</ul>
+<h4 id="Larger-Caches">Larger Caches</h4>
+<p>一方面，增大 cache 的大小，可以减少<strong>容量失效</strong>的发生</p>
+<p>另一方面，更大的 cache 会带来更长的 hit time，以及消耗更高的成本和功率</p>
+<p>这种技术往往只用在芯片外的 cache 上</p>
+<h4 id="Higher-Associativity">Higher Associativity</h4>
+<p>提高相联程度降低了 miss rate，但同时会增大 hit time。因此对高时钟频率处理器而言，不建议提高相联程度；而在 miss penalty 较大时，则鼓励提升相联程度</p>
+<p>我们还有两条经验法则：</p>
+<ul>
+<li>实际情况下，<strong>八路组相联</strong>降低失效的效果近乎等价于全相联的效果</li>
+<li>2:1 高速缓存经验法则：（对于 128KiB 以下的高速缓存）对于大小为 N 的直接映射的高速缓存，它的失效率与大小为 N/2 的二路组相联的高速缓存的失效率相等</li>
+</ul>
+<h4 id="Multilevel-Caches">Multilevel Caches</h4>
+<p>我们先考虑最简单的情况——两级高速缓存：</p>
+<ul>
+<li>第一级高速缓存（以下简称 <strong>L1</strong>）可以足够小，以跟上处理器的时钟周期
+<ul>
+<li>L1 的速度将影响处理器的时钟频率</li>
+</ul>
+</li>
+<li>第二级高速缓存（以下简称 <strong>L2</strong>）可以足够大，以捕获更多对内存的访问
+<ul>
+<li>L2 的速度仅对 L1 的 miss penalty 有影响</li>
+<li>若 L2 不够大，反而会增大 miss rate</li>
+</ul>
+</li>
+</ul>
+<p>引入多级高速缓存后，AMAT 计算公式变为了：</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>Average memory access time</mtext><mo>=</mo><msub><mtext>Hit time</mtext><mrow><mi>L</mi><mn>1</mn></mrow></msub><mo>+</mo><msub><mtext>Miss rate</mtext><mrow><mi>L</mi><mn>1</mn></mrow></msub><mo>×</mo><mo stretchy="false">(</mo><msub><mtext>Hit time</mtext><mrow><mi>L</mi><mn>2</mn></mrow></msub><mo>+</mo><msub><mtext>Miss rate</mtext><mrow><mi>L</mi><mn>2</mn></mrow></msub><mo>×</mo><msub><mtext>Miss penalty</mtext><mrow><mi>L</mi><mn>2</mn></mrow></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\text{Average memory access time}=\text{Hit time}_{L1}+\text{Miss rate}_{L1}\times(\text{Hit time}_{L2}+\text{Miss rate}_{L2}\times\text{Miss penalty}_{L2})
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord text"><span class="mord">Average memory access time</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord text"><span class="mord">Hit time</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">L</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord text"><span class="mord">Miss rate</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">L</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord text"><span class="mord">Hit time</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">L</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord text"><span class="mord">Miss rate</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">L</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord text"><span class="mord">Miss penalty</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2342em;"><span style="top:-2.4559em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">L</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2441em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span></p>
+<p>为了消除歧义，有必要在这里对“失效率”做进一步的阐述：</p>
+<ul>
+<li><strong>局部失效率</strong>(local miss rate) = 在某个高速缓存的失效次数 / 在该高速缓存中总的存储器访问次数
+<ul>
+<li>在公式中 L1 和 L2 的局部失效率分别为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mtext>Miss rate</mtext><mrow><mi>L</mi><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\text{Miss rate}_{L1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord text"><span class="mord">Miss rate</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">L</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mtext>Miss rate</mtext><mrow><mi>L</mi><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\text{Miss rate}_{L2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord text"><span class="mord">Miss rate</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">L</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></li>
+</ul>
+</li>
+<li><strong>全局失效率</strong>(global miss rate) = 在某个高速缓存的失效次数 / 来自处理器的总的存储器访问次数
+<ul>
+<li>在公式中 L1 和 L2 的全局失效率分别为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mtext>Miss rate</mtext><mrow><mi>L</mi><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\text{Miss rate}_{L1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord text"><span class="mord">Miss rate</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">L</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mtext>Miss rate</mtext><mrow><mi>L</mi><mn>1</mn></mrow></msub><mo>×</mo><msub><mtext>Miss rate</mtext><mrow><mi>L</mi><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\text{Miss rate}_{L1}\times\text{Miss rate}_{L2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord text"><span class="mord">Miss rate</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">L</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord text"><span class="mord">Miss rate</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">L</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></li>
+</ul>
+</li>
+</ul>
+<p>有时也用每条指令的失效数作为衡量指标，计算公式为：</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>Average memory stalls per instruction</mtext><mo>=</mo><msub><mtext>Misses per instruction</mtext><mrow><mi>L</mi><mn>1</mn></mrow></msub><mo>×</mo><msub><mtext>Hit time</mtext><mrow><mi>L</mi><mn>2</mn></mrow></msub><mspace linebreak="newline"></mspace><mo>+</mo><msub><mtext>Misses per instruction</mtext><mrow><mi>L</mi><mn>2</mn></mrow></msub><mo>×</mo><msub><mtext>Miss penalty</mtext><mrow><mi>L</mi><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\text{Average memory stalls per instruction}=\text{Misses per instruction}_{L1}\times\text{Hit time}_{L2}\\+\text{Misses per instruction}_{L2}\times\text{Miss penalty}_{L2}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord text"><span class="mord">Average memory stalls per instruction</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.9275em;vertical-align:-0.2441em;"></span><span class="mord"><span class="mord text"><span class="mord">Misses per instruction</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2342em;"><span style="top:-2.4559em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">L</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2441em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord text"><span class="mord">Hit time</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">L</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:0.9275em;vertical-align:-0.2441em;"></span><span class="mord">+</span><span class="mord"><span class="mord text"><span class="mord">Misses per instruction</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2342em;"><span style="top:-2.4559em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">L</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2441em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.9386em;vertical-align:-0.2441em;"></span><span class="mord"><span class="mord text"><span class="mord">Miss penalty</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2342em;"><span style="top:-2.4559em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">L</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2441em;"><span></span></span></span></span></span></span></span></span></span></span></p>
+<p>还有一个值得考虑的问题：L1 内的数据是否需要出现在 L2 内？由此引出了两种策略：</p>
+<ul>
+<li><strong>多级包含</strong>(multilevel inclusion)：L1 的数据永远都会在 L2 出现，这样可以确保数据的一致性
+<ul>
+<li>缺点是对于数据块大小不同的多级高速缓存中，需要做额外的处理工作，这样可能会略微提高 L1 的失效率。因此为了方便起见，很多高速缓存设计中会让各级的高速缓存保持相同大小的数据块。</li>
+</ul>
+</li>
+<li><strong>多级排斥</strong>(multilevel exclusion)：L1 的数据永远不会在 L2 出现
+<ul>
+<li>这适用于 L2 仅比 L1 稍大一些的情况，当 L1 出现失效的情况时，交换 L1 和 L2 的数据，而非用 L2 的数据块替代 L1，以避免 L2 额外的空间浪费</li>
+</ul>
+</li>
+</ul>
+<h4 id="Giving-Priority-to-Read-Misses-over-Writes">Giving Priority to Read Misses over Writes</h4>
+<p>赋予“<strong>读操作优先于写操作</strong>”，什么意思呢？我们先来看一个之前可能忽略的点。</p>
+<p>在<strong>写穿</strong>策略中，我们会利用<strong>写缓冲区</strong>提升其性能。然而，写缓冲区虽然能提高写操作的效率，但它引入了一个复杂性：写缓冲区中可能包含了某个位置的最新更新值，而这个位置的数据可能在读失效时被请求。如果读操作直接从主存获取数据，而写缓冲区中的数据尚未写入主存，就会导致 <strong>RAW 数据冒险</strong>（即读到了旧数据）。</p>
+<p>我们有以下解决方案：</p>
+<ul>
+<li>最简单但低效的方法是：让读失效操作等待，直到写缓冲区清空。但这会严重增加读失效的损失。</li>
+<li>所以，普遍采用的优化方法是：当发生读失效时，检查写缓冲区的内容。
+<ul>
+<li>如果读请求的地址在写缓冲区中存在（意味着有待写入的最新数据），则直接从写缓冲区获取数据。</li>
+<li>如果没有冲突，并且内存系统可用，则允许读失效继续进行，从主存获取数据。</li>
+<li>这种方法有效地赋予了<strong>读操作优先于写操作</strong>的权利。</li>
+</ul>
+</li>
+</ul>
+<p>即使是<strong>写回式高速缓存</strong>，写操作的开销也可以通过类似的方式减少：</p>
+<ul>
+<li>当读失效需要替换一个“脏”的内存块时，不是先将脏块写回主存，再从主存读取新块，而是将脏块复制到写缓冲区中。</li>
+<li>然后立即从主存读取新块</li>
+<li>脏块的写回操作则在后台由写缓冲区处理。</li>
+<li>同样，处理器在读未命中时也需要检查写缓冲区中是否有冲突的地址。</li>
+</ul>
+<h4 id="Avoiding-Address-Translation-During-Indexing-of-the-Cache">Avoiding Address Translation During Indexing of the Cache</h4>
+<p>我一开始关于这个标题也有很多疑问？“地址转化”是什么？我们平时将 Memory Address 分为 offset, index, tag，用 index 去找在第几组，用 tag 取匹配组内的数据，看起来没有涉及“地址转化”的步骤。</p>
+<p>其实“地址转化”和之前学过的“<strong>虚拟内存</strong>”（后面也会提到）有关。由于 Virtual Memory 的需要，CPU 发出的其实是不能直接用于访问 cache 的虚拟地址，需要查找页表，转化为物理地址，才能取访问 cache 和内存。</p>
+<p>先介绍一种方法——<strong>VIVT</strong>（虚拟索引，虚拟标签），即直接将虚拟地址划分为 offset, index, tag，然后按照虚拟地址的 index 去访问 cache 的组，再用虚拟地址的 tag 取匹配组内数据。</p>
+<p>直接用虚拟地址访问 cache，就没物理地址什么事了，更提不上地址转化，听起来不错，但也有问题：</p>
+<ul>
+<li><strong>歧义</strong>(ambiguity) 问题：每当切换进程时，相同的虚拟地址就会指向不同的物理地址，需要对高速缓存进行清除操作</li>
+<li>操作系统和用户程序可能使用两个不同的虚拟地址来指代同一个物理地址，这些重复的地址称为同义词 (synonyms) 或<strong>别名</strong>(aliases)</li>
+</ul>
+<p>所以目前采用的方法是 <strong>VIPT</strong>（虚拟索引，物理标签），什么意思呢？</p>
+<ul>
+<li>index 采用虚拟地址上的 index，可以直接访问到 cache 中的组</li>
+<li>tag 仍需要通过查找页表将其转化为物理地址的 tag</li>
+<li>上面两步是同时进行的，用 index 定位到 cache 中的组后，可以直接用转化得到的 tag 去匹配具体的数据了</li>
+</ul>
+<p>所以其实“地址转化”这个过程没有“避免”，而是通过平行操作，将“地址转化”带来的损失给消除了 ，看下面这张图可能会直观一些：</p>
+<img src="/image/ca/vipt.png" alt="vipt" style="zoom: 50%;" />
+<h2 id="2-3-Advanced-Optimizations">2.3 Advanced Optimizations</h2>
+<p>在高级优化方法中，我们除了考虑 AMAT 公式中的三个因素外，还要考虑高速缓存的带宽和功耗问题</p>
+<p>一共是十个因素，它们各自的影响可以参见下面的表格：</p>
+<img src="/image/ca/advanced_cache_optim.png" alt="advanced_cache_optim" style="zoom: 50%;" />
+<p>下面我们逐一介绍：</p>
+<ol>
+<li>
+<p>Small and Simple First-Level Caches</p>
+<ul>
+<li>减小一级高速缓存的大小，或者降低 L1 的相关程度都有助于<strong>减小命中时间和功耗</strong></li>
+</ul>
+</li>
+<li>
+<p>Way Prediction</p>
+<ul>
+<li><strong>路预测</strong>(way-prediction)：在高速缓存中保留额外的位（称为<strong>块预测器位</strong>(block predictor bit)），用于预测下一次可能被访问的数据块
+<ul>
+<li>如果预测正确，高速缓存的访问时延就是很快的命中时间</li>
+<li>如果预测失败，那么就要尝试下一个数据块，改变预测者的内容，并且会有一个额外的时钟周期时延</li>
+</ul>
+</li>
+<li>这种方法的一大缺点是加大了使高速缓存访问流水线化的难度</li>
+</ul>
+</li>
+<li>
+<p>Pipelined Access and Multibanked Caches</p>
+<ul>
+<li>使高速缓存访问<strong>流水线化</strong>以及采用多个<strong>分区</strong>(banks) 加宽高速缓存都能<strong>提升高速缓存的带宽</strong>
+<ul>
+<li>使高速缓存访问流水线化：使<strong>指令</strong>高速缓存流水线化可以有效提升流水线 CPU 的阶段数量，但这样会导致更大的分支预测错误损失；使<strong>数据</strong>高速缓存流水线化可以在发射加载指令和使用数据之间增加更多的时钟周期数</li>
+<li>采用多个分区加宽高速缓存：高速缓存被分为独立的分区，每个分区支持独立的访问</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Nonblocking Caches</p>
+<ul>
+<li><strong>非阻塞的高速缓存</strong>(nonblocking caches) 允许数据高速缓存在失效发生时继续提供命中（hit during miss），能够降低 miss penalty</li>
+<li>高速缓存失效不会使处理器停顿的特点加大了评估非阻塞高速缓存性能的难度</li>
+</ul>
+</li>
+<li>
+<p>Critical Word First and Early Start</p>
+<ul>
+<li>优先处理关键字与提前启动：在缓存缺失时，优先加载所需的关键字，而不是整个块，这两种优化方法仅在高速缓存数据块较大的情况下有明显的好处</li>
+</ul>
+</li>
+<li>
+<p>Merging Write Buffer</p>
+<ul>
+<li>合并写缓冲区：如果有多个写操作到连续的地址上，则可以将它们合并为一个操作
+<ul>
+<li>具体实现：如果缓冲区包含一些被修改的数据块，那么就要检查一下地址，看这些新数据的地址是否与某个有效的写缓冲区项匹配，如果匹配的话，就将新数据并入到这个项里</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Compiler Optimizations</p>
+<ul>
+<li>编译器优化：软件层面的优化，可以降低 miss rate</li>
+<li>对于<strong>指令</strong>：
+<ul>
+<li>重排内存中的过程，以降低冲突失效</li>
+<li>分析指令，以观察冲突是否发生</li>
+</ul>
+</li>
+<li>对于<strong>数据</strong>：
+<ul>
+<li><strong>合并数组</strong>(merging arrays)：用单个数组表示复合元素，以提升空间局部性</li>
+<li><strong>循环交换</strong>(loop interchange)：有时通过交换内层循环和外层循环，使得访问数据的顺序更符合存储数据的顺序。这种方法通过改进空间局部性来减少失效率</li>
+<li><strong>循环融合</strong>(loop fusion)：合并两个具有相同循环，且部分变量重叠的独立循环</li>
+<li><strong>分块</strong>(blocking)：将大的数组划分一块块小块 (block)，通过分别解决每个小块来解决整个数组。该方法同时利用了空间和时间的局部性</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>ardware Prefetching of Instructions and Data</p>
+<ul>
+<li>硬件预取：使用预取器来预测将要访问的数据并提前加载到缓存中</li>
+<li>指令预取：
+<ul>
+<li>当发生指令失效时，处理器不仅会请求当前缺失的指令块，还会预取<strong>下一个连续的指令块</strong></li>
+<li>这些预取到的块会被放置在指令<strong>流缓冲区</strong>(stream buffer) 中</li>
+<li>如果请求的块已经在流缓冲区中，则取消原始缓存请求，并发出下一个预取请求</li>
+</ul>
+</li>
+<li>数据预取：上述方法也适用于数据访问</li>
+</ul>
+</li>
+<li>
+<p>Compiler-Controlled Prefetching</p>
+<ul>
+<li>编译器预取：编译器在编译代码时插入预取指令，提前将数据从内存加载到缓存中</li>
+</ul>
+</li>
+<li>
+<p>Using HBM to Extend the Memory Hierarchy</p>
+<ul>
+<li><strong>HBM</strong>(high bandwidth memory)：高带宽内存</li>
+</ul>
+</li>
+</ol>
+<h2 id="3-Virtual-Memory">3 Virtual Memory</h2>
+<p>虚拟内存，上学期没怎么学明白，这里再重温一下</p>
+<p>先来回顾一些概念：</p>
+<ul>
+<li>
+<p>虚拟内存：那些内存中放不下且不经常使用的数据放到磁盘上，从而释放内存空间，如下图</p>
+<img src="/image/ca/virtual_mem.png" alt="virtual_mem" style="zoom: 67%;" />
+</li>
+<li>
+<p>物理地址：进程实际使用的内存地址</p>
+</li>
+<li>
+<p>虚拟地址：进程认为自己使用的内存地址</p>
+</li>
+<li>
+<p>页：定长的虚拟内存数据块（类比 cahce 的 block）</p>
+</li>
+</ul>
+<p>虚拟内存可以类比 cache 理解，二者不同之处在于：</p>
+<ul>
+<li>高速缓存失效的替换是由硬件控制的，而虚拟内存的替换是由操作系统控制的</li>
+<li>处理器地址的大小决定了虚拟内存的大小，而高速缓存的大小与处理器地址的大小无关</li>
+</ul>
+<h3 id="3-1-Four-Memory-Hierarchy-Questions-Revisited">3.1 Four Memory Hierarchy Questions Revisited</h3>
+<p>之前讲存储器层次结构时提到“四个问题”，这里我们依然从“四个问题”入手，回答一些虚拟内存有关的问题</p>
+<ul>
+<li>数据块放置：<strong>全相联</strong>
+<ul>
+<li>理由：虚拟内存的失效损失相当相当大（数百万个时钟周期数），因此需要尽可能地降低失效率，而全相联的失效率最低。</li>
+</ul>
+</li>
+<li>数据块识别
+<ul>
+<li>通常使用<strong>页表</strong>(page table) 这一数据结构来存储虚拟内存数据块的物理地址，作为虚拟地址转换为物理地址的参照依据</li>
+<li>为了减少地址转换的时间，通常还会用到一种名为转换后备缓冲区 (<strong>TLB</strong>) 的部件</li>
+</ul>
+</li>
+<li>数据块替换
+<ul>
+<li><strong>LRU</strong>，具体会用到一个使用位 / 引用位 (use/reference bit)。操作系统会周期性地清除使用位，随后又添上去，这样便可以记录一段时间内页的访问情况</li>
+</ul>
+</li>
+<li>写入策略：<strong>写回</strong></li>
+</ul>
+<h3 id="3-2-Techniques-for-Fast-Address-Translation">3.2 Techniques for Fast Address Translation</h3>
+<p>由于页表很大，所以一般被存在内存中，为了避免额外的内存访问，我们可以借助局部性原则，将部分地址的翻译保留到一个特殊的缓存中，这样的缓存就是我们熟知的 <strong>TLB</strong></p>
+<p>TLB 的结构类似高速缓存：它的<strong>标签</strong>位用于保存<strong>虚拟</strong>地址，而<strong>数据</strong>位用于保存<strong>物理</strong>页编号，同时存在一些保护字段，合法位，以及可能的使用位和脏位</p>
+<img src="/image/ca/address_trans.png" alt="address_trans" style="zoom:50%;" />
+<p>之前在讲 cache 优化时提到过地址转化的过程，这里可以参照上面这张图再体会一下：</p>
+<ol>
+<li>将虚拟地址发送至所有标签（TLB 和 cache）</li>
+<li>检查内存访问类型，与 TLB 中的保护信息进行比对</li>
+<li>匹配到的标签将物理地址发给 MUX</li>
+<li>拼接页偏移量和物理页帧，组成最终的物理地址</li>
+</ol>
+<h3 id="3-3-Page-Size">3.3 Page Size</h3>
+<p>我们倾向使用<strong>更大的页</strong>，理由如下：</p>
+<ul>
+<li>由于页表的大小和页的大小成反比，因此内存（或其他存储页表的资源）可以通过增大页的大小来节省空间</li>
+<li>更大的页可以使用更大的高速缓存，以达到更快的命中时间</li>
+<li>在二级存储器，或者在网络中传输更大的页，相比传输更小的页更有效</li>
+<li>更大的页意味着更多的内存能被有效映射，因此减少了 TLB 失效的情况</li>
+</ul>
+<p>但如果需要保留存储空间，或者希望启动进程的速度更快时，我们更倾向于使用<strong>更小的页</strong></p>
+<h3 id="3-4-Protection">3.4 Protection</h3>
+<p>先是一些概念：</p>
+<ul>
+<li><strong>多程序</strong>(multiprogramming)：并发运行的程序共享一台计算机资源</li>
+<li><strong>进程</strong>(process)：包括正在运行的程序，以及该程序运行的状态</li>
+<li><strong>时间共享</strong>(time-sharing)：多程序的一种变体，同时为多个可交互的用户分享处理器和存储器资源，当作这些用户有自己的计算机</li>
+<li><strong>进程切换</strong>(process switch)：任何时候从一个进程切换到另一个进程的行为</li>
+</ul>
+<p>然后是保护机制：</p>
+<ul>
+<li>由于进程可能会被多次中断或切换，因此计算机（硬件）以及操作系统的设计者需要为维护正确的进程行为负责，具体来说：
+<ul>
+<li>计算机设计者确保进程状态中处理器的那部分能够被保存和恢复</li>
+<li>操作系统设计者保证进程之间不会相互干扰——通过划分内存来确保不同的进程在同一时间内有自己的状态</li>
+</ul>
+</li>
+<li>每个进程都有自己的页表，指向不同的内存页，以保护进程</li>
+<li><strong>环级权限</strong>(ring)：处理器的一种保护机制，分为用户、核 (kernel)，以及可能更多的特权等级</li>
+</ul>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/ca/">ca</a></div><div class="post-share"><div class="social-share" data-image="/image/dedication.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/03/02/ca1/" title="Fundamentals of Computer Design"><img class="cover" src="/image/dedication.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-02</div><div class="info-item-2">Fundamentals of Computer Design</div></div><div class="info-2"><div class="info-item-1">只能说不愧是第一章，内容很多，但考点没看到几个</div></div></div></a><a class="pagination-related" href="/2026/03/02/ca0/" title="计算机架构笔记索引"><img class="cover" src="/image/dedication.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-02</div><div class="info-item-2">计算机架构笔记索引</div></div><div class="info-2"><div class="info-item-1">希望能比计组更轻松一点</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">樂Yi安</div><div class="author-info-description">主不在乎，我在乎</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">62</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">14</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/FiangLiang"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/FiangLiang" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:1244928983@qq.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #24292e;"></i></a><a class="social-icon" href="tencent://AddContact/?fromId=45&amp;fromSubId=1&amp;subcmd=all&amp;uin=1244928983" target="_blank" title="QQ"><i class="fab fa-qq" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">千山翻遍，愿你柔软（2025/12/12）</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">Memory Hierarchy Design</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Memory-Hierarchy"><span class="toc-number">1.1.</span> <span class="toc-text">1 Memory Hierarchy</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-Memory-Technology"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1 Memory Technology</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-Techniques-for-Higher-Bandwidth"><span class="toc-number">1.1.2.</span> <span class="toc-text">1.2 Techniques for Higher Bandwidth</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-Four-Memory-Hierarchy-Questions"><span class="toc-number">1.1.3.</span> <span class="toc-text">1.3 Four Memory Hierarchy Questions</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Block-Placement"><span class="toc-number">1.1.3.1.</span> <span class="toc-text">Block Placement</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Block-Identification"><span class="toc-number">1.1.3.2.</span> <span class="toc-text">Block Identification</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Block-Replacement"><span class="toc-number">1.1.3.3.</span> <span class="toc-text">Block Replacement</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Write-Strategy"><span class="toc-number">1.1.3.4.</span> <span class="toc-text">Write Strategy</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Cache"><span class="toc-number">1.2.</span> <span class="toc-text">2 Cache</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-Performance"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1 Performance</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-Basic-Optimizations"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.2 Basic Optimizations</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Larger-Block-Size"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">Larger Block Size</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Larger-Caches"><span class="toc-number">1.2.2.2.</span> <span class="toc-text">Larger Caches</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Higher-Associativity"><span class="toc-number">1.2.2.3.</span> <span class="toc-text">Higher Associativity</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Multilevel-Caches"><span class="toc-number">1.2.2.4.</span> <span class="toc-text">Multilevel Caches</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Giving-Priority-to-Read-Misses-over-Writes"><span class="toc-number">1.2.2.5.</span> <span class="toc-text">Giving Priority to Read Misses over Writes</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Avoiding-Address-Translation-During-Indexing-of-the-Cache"><span class="toc-number">1.2.2.6.</span> <span class="toc-text">Avoiding Address Translation During Indexing of the Cache</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-Advanced-Optimizations"><span class="toc-number">1.3.</span> <span class="toc-text">2.3 Advanced Optimizations</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Virtual-Memory"><span class="toc-number">1.4.</span> <span class="toc-text">3 Virtual Memory</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-Four-Memory-Hierarchy-Questions-Revisited"><span class="toc-number">1.4.1.</span> <span class="toc-text">3.1 Four Memory Hierarchy Questions Revisited</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-Techniques-for-Fast-Address-Translation"><span class="toc-number">1.4.2.</span> <span class="toc-text">3.2 Techniques for Fast Address Translation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-Page-Size"><span class="toc-number">1.4.3.</span> <span class="toc-text">3.3 Page Size</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-Protection"><span class="toc-number">1.4.4.</span> <span class="toc-text">3.4 Protection</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/03/29/ca2/" title="Memory Hierarchy Design"><img src="/image/dedication.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Memory Hierarchy Design"/></a><div class="content"><a class="title" href="/2026/03/29/ca2/" title="Memory Hierarchy Design">Memory Hierarchy Design</a><time datetime="2026-03-29T08:37:22.452Z" title="发表于 2026-03-29 16:37:22">2026-03-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/22/ds3/" title="Lec 3 Introduction to SQL"><img src="/image/forever.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Lec 3 Introduction to SQL"/></a><div class="content"><a class="title" href="/2026/03/22/ds3/" title="Lec 3 Introduction to SQL">Lec 3 Introduction to SQL</a><time datetime="2026-03-22T11:29:48.955Z" title="发表于 2026-03-22 19:29:48">2026-03-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/12/ds2/" title="Lec 2 Relational Model"><img src="/image/forever.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Lec 2 Relational Model"/></a><div class="content"><a class="title" href="/2026/03/12/ds2/" title="Lec 2 Relational Model">Lec 2 Relational Model</a><time datetime="2026-03-12T09:46:31.443Z" title="发表于 2026-03-12 17:46:31">2026-03-12</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/08/iaaap1/" title="Chap 1 Basic Concepts and Programming Introduction"><img src="/image/praying.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Chap 1 Basic Concepts and Programming Introduction"/></a><div class="content"><a class="title" href="/2026/03/08/iaaap1/" title="Chap 1 Basic Concepts and Programming Introduction">Chap 1 Basic Concepts and Programming Introduction</a><time datetime="2026-03-08T15:31:51.510Z" title="发表于 2026-03-08 23:31:51">2026-03-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/08/iaaap0/" title="图像信息处理索引"><img src="/image/praying.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="图像信息处理索引"/></a><div class="content"><a class="title" href="/2026/03/08/iaaap0/" title="图像信息处理索引">图像信息处理索引</a><time datetime="2026-03-08T15:29:46.886Z" title="发表于 2026-03-08 23:29:46">2026-03-08</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2025 - 2026 By 樂Yi安</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div id="running-time"></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><div class="js-pjax"><script>(async () => {
+  const showKatex = () => {
+    document.querySelectorAll('#article-container .katex').forEach(el => el.classList.add('katex-show'))
+  }
+
+  if (!window.katex_js_css) {
+    window.katex_js_css = true
+    await btf.getCSS('https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css')
+    if (true) {
+      await btf.getScript('https://cdn.jsdelivr.net/npm/katex/dist/contrib/copy-tex.min.js')
+    }
+  }
+
+  showKatex()
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const initValine = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyValine = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const valineConfig = {
+      el: '#vcomment',
+      appId: 'HVX9kRRbh0oljKrbF5PNkI6n-gzGzoHsz',
+      appKey: 'SKpeFJ7zkFjz1Vmf3SzquUsz',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      visitor: false,
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || window.location.pathname
+    }
+
+    new Valine(valineConfig)
+  }
+
+  const loadValine = async (el, path) => {
+    if (typeof Valine === 'function') {
+      initValine(el, path)
+    } else {
+      await btf.getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js')
+      initValine(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Valine' === 'Valine'
+      ? window.shuoshuoComment = { loadComment: loadValine }
+      : window.loadOtherComment = loadValine
+    return
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})()</script></div><div class="aplayer no-destroy" data-id="10164556996" data-server="netease" data-type="playlist"   data-order="list" data-fixed="true" data-preload="auto" data-autoplay="false" data-mutex="true" ></div><script src="/js/title.js"></script><script>setInterval(()=>{let create_time=Math.round(new Date("2025-01-15-00:00:00").getTime()/1000);let timestamp=Math.round((new Date().getTime()+8*60*60*1000)/1000);let second=timestamp-create_time;let time=new Array(0,0,0,0,120);if(second>=365*24*3600){time[0]=parseInt(second/(365*24*3600));second%=365*24*3600}if(second>=24*3600){time[1]=parseInt(second/(24*3600));second%=24*3600}if(second>=3600){time[2]=parseInt(second/3600);second%=3600}if(second>=60){time[3]=parseInt(second/60);second%=60}if(second>0){time[4]=second}currentTimeHtml='小破站一共不安全运行 '+time[0]+' 年 '+time[1]+' 天 '+time[2]+' 时 '+time[3]+' 分 '+time[4]+' 秒';var elementById=document.getElementById('running-time');if(elementById){elementById.innerHTML=currentTimeHtml}},1000);</script><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div><!-- hexo injector body_end start --><script data-pjax>
+    function butterfly_categories_card_injector_config(){
+      var parent_div_git = document.getElementById('recent-posts');
+      var item_html = '<style>li.categoryBar-list-item{width:32.3%;}.categoryBar-list{max-height: 190px;overflow:auto;}.categoryBar-list::-webkit-scrollbar{width:0!important}@media screen and (max-width: 650px){.categoryBar-list{max-height: 160px;}}</style><div class="recent-post-item" style="height:auto;width:100%;padding:0px;"><div id="categoryBar"><ul class="categoryBar-list"><li class="categoryBar-list-item" style="background:url(https://npm.elemecdn.com/akilar-candyassets/image/cover1.webp);"> <a class="categoryBar-list-link" href="categories/个人杂谈/">个人杂谈</a><span class="categoryBar-list-count">4</span><span class="categoryBar-list-descr"></span></li><li class="categoryBar-list-item" style="background:url(https://npm.elemecdn.com/akilar-candyassets/image/cover2.webp);"> <a class="categoryBar-list-link" href="categories/课外技能/">课外技能</a><span class="categoryBar-list-count">3</span><span class="categoryBar-list-descr"></span></li><li class="categoryBar-list-item" style="background:url(https://npm.elemecdn.com/akilar-candyassets/image/cover3.webp);"> <a class="categoryBar-list-link" href="categories/课内拓展/">课内拓展</a><span class="categoryBar-list-count">1</span><span class="categoryBar-list-descr"></span></li><li class="categoryBar-list-item" style="background:url(https://npm.elemecdn.com/akilar-candyassets/image/cover4.webp);"> <a class="categoryBar-list-link" href="categories/解题记录/">解题记录</a><span class="categoryBar-list-count">2</span><span class="categoryBar-list-descr"></span></li><li class="categoryBar-list-item" style="background:url(https://npm.elemecdn.com/akilar-candyassets/image/cover5.webp);"> <a class="categoryBar-list-link" href="categories/课程笔记/">课程笔记</a><span class="categoryBar-list-count">52</span><span class="categoryBar-list-descr"></span></li></ul></div></div>';
+      console.log('已挂载butterfly_categories_card')
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+      }
+    if( document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    butterfly_categories_card_injector_config()
+    }
+  </script><script data-pjax>
+  function butterfly_clock_anzhiyu_injector_config(){
+    var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+    var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img class="entered loading" id="card-clock-loading" src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading"/></div></div></div></div></div>';
+    console.log('已挂载butterfly_clock_anzhiyu')
+    if(parent_div_git) {
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var qweather_key = '695758cf7806402a9519355b59810fcb';
+  var gaud_map_key = '7d51e84627335448e294a26dd2249a2a';
+  var baidu_ak_key = 'undefined';
+  var flag = 0;
+  var clock_rectangle = '112.982279,28.19409';
+  var clock_default_rectangle_enable = 'false';
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  </script><script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script><script data-pjax src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.js"></script><div class="js-pjax"><script async="async">var arr = document.getElementsByClassName('recent-post-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '1.5s');
+    arr[i].setAttribute('data-wow-delay', '200ms');
+    arr[i].setAttribute('data-wow-offset', '30');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-widget');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '');
+    arr[i].setAttribute('data-wow-delay', '200ms');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('flink-list-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__flipInY');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('flink-list-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__animated');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('article-sort-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__slideInRight');
+    arr[i].setAttribute('data-wow-duration', '1.5s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('site-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__flipInY');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('site-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__animated');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script></div><script defer src="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/wow.min.js"></script><script defer src="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/wow_init.js"></script><!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body></html>
