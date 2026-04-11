@@ -1,0 +1,450 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Lec4 Inside Object | 方宅十亩</title><meta name="author" content="樂Yi安"><meta name="copyright" content="樂Yi安"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="施工中……">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lec4 Inside Object">
+<meta property="og:url" content="http://example.com/2026/04/11/oop4/index.html">
+<meta property="og:site_name" content="方宅十亩">
+<meta property="og:description" content="施工中……">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/image/star.png">
+<meta property="article:published_time" content="2026-04-11T02:21:04.295Z">
+<meta property="article:modified_time" content="2026-04-11T02:22:10.341Z">
+<meta property="article:author" content="樂Yi安">
+<meta property="article:tag" content="oop">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/image/star.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Lec4 Inside Object",
+  "url": "http://example.com/2026/04/11/oop4/",
+  "image": "http://example.com/image/star.png",
+  "datePublished": "2026-04-11T02:21:04.295Z",
+  "dateModified": "2026-04-11T02:22:10.341Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "樂Yi安",
+      "url": "http://example.com/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.jpg"><link rel="canonical" href="http://example.com/2026/04/11/oop4/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Lec4 Inside Object',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-categories-card@1.0.0/lib/categorybar.css"><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.css" /><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/animate.min.css" media="print" onload="this.media='screen'"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background: linear-gradient(0deg,rgba(247,149,51,0.1) 0,rgba(243,112,85,0.1) 15%,rgba(239,78,123,0.1) 30%,rgba(161,102,171,0.1) 44%,rgba(80,115,184,0.1) 58%,rgba(16,152,173,0.1) 72%,rgba(7,179,155,0.1) 86%,rgba(109,186,130,0.1) 100%);;"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">63</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">14</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-envelope"></i><span> 留言板</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/image/star.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">方宅十亩</span></a><a class="nav-page-title" href="/"><span class="site-name">Lec4 Inside Object</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-envelope"></i><span> 留言板</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Lec4 Inside Object</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-04-11T02:21:04.295Z" title="发表于 2026-04-11 10:21:04">2026-04-11</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-04-11T02:22:10.341Z" title="更新于 2026-04-11 10:22:10">2026-04-11</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">课程笔记</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1>Lec4 Inside Object</h1>
+<p>又是看不懂标题的一集…</p>
+<p>总之这一章涉及了一些比较零碎的概念：访问权限、作用域、引用、constant、动态分配内存等等。如果一定要说有什么共同点的话，它们都是对象具有的一些属性或者使用方法。</p>
+<h2 id="1-访问权限">1 访问权限</h2>
+<p>在 C++ 中，类的成员可以有三种访问权限：<strong>public</strong>、<strong>protected</strong>、<strong>private</strong>。上一章也提到，C++ 中结构体和类最大的区别是默认访问权限，前者是 <strong>pubilc</strong>，后者是 <strong>private</strong>。</p>
+<p>这些访问权限区别在于<strong>类的外部和派生类中的和可访问性</strong>，下面我们一一举例介绍。</p>
+<h3 id="1-1-public">1.1 public</h3>
+<p>公有成员在类内外的所有地方都可以访问</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MyClass</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="type">int</span> publicVar;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">publicMethod</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">// 公有成员函数</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    MyClass obj;</span><br><span class="line">    obj.publicVar = <span class="number">10</span>; <span class="comment">// 可以在类的外部访问公有成员变量</span></span><br><span class="line">    obj.<span class="built_in">publicMethod</span>(); <span class="comment">// 可以在类的外部调用公有成员函数</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="1-2-private">1.2 private</h3>
+<p>私有成员只有在类内可以访问</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MyClass</span> &#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="type">int</span> privateVar;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">privateMethod</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">// 私有成员函数</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">accessPrivateMembers</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        privateVar = <span class="number">30</span>; <span class="comment">// 可以在类的内部访问私有成员变量</span></span><br><span class="line">        <span class="built_in">privateMethod</span>(); <span class="comment">// 可以在类的内部调用私有成员函数</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    MyClass obj;</span><br><span class="line">    obj.<span class="built_in">accessPrivateMembers</span>();</span><br><span class="line">    <span class="comment">// obj.privateVar = 10; // 错误：不能在类的外部访问私有成员变量</span></span><br><span class="line">    <span class="comment">// obj.privateMethod(); // 错误：不能在类的外部调用私有成员函数</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="1-3-protected">1.3 protected</h3>
+<p>介于 <strong>public、private</strong> 之间，受保护成员只能在类的内部和派生类中访问，不能在类的外部访问</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Base</span> &#123;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">    <span class="type">int</span> protectedVar;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">protectedMethod</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">// 受保护成员函数</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Derived</span> : <span class="keyword">public</span> Base &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">accessProtectedMembers</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        protectedVar = <span class="number">20</span>; <span class="comment">// 可以在派生类中访问受保护成员变量</span></span><br><span class="line">        <span class="built_in">protectedMethod</span>(); <span class="comment">// 可以在派生类中调用受保护成员函数</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Derived obj;</span><br><span class="line">    obj.<span class="built_in">accessProtectedMembers</span>();</span><br><span class="line">    <span class="comment">// obj.protectedVar = 10; // 错误：不能在类的外部访问受保护成员变量</span></span><br><span class="line">    <span class="comment">// obj.protectedMethod(); // 错误：不能在类的外部调用受保护成员函数</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>关于<strong>派生类</strong>的部分会在后面章节中介绍</p>
+<h3 id="1-4-友元">1.4 友元</h3>
+<p>上面提到，不同访问权限的成员在类的外部和派生类中的和可访问性不同。但 C++ 其实提供了一种叫做“<strong>友元</strong>”的手段，能支持我们在类外访问一个私有成员或受保护成员。</p>
+<p>我们可以用 <code>friend</code>使其他类成为本类的友元，如下</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MyClass</span> &#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="type">int</span> privateVar;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">MyClass</span>() : <span class="built_in">privateVar</span>(<span class="number">0</span>) &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 声明友元类</span></span><br><span class="line">    <span class="keyword">friend</span> <span class="keyword">class</span> <span class="title class_">FriendClass</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FriendClass</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">accessPrivateMembers</span><span class="params">(MyClass&amp; obj)</span> </span>&#123;</span><br><span class="line">        obj.privateVar = <span class="number">42</span>; <span class="comment">// 可以访问私有成员变量</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    MyClass obj;</span><br><span class="line">    FriendClass friendObj;</span><br><span class="line">    friendObj.<span class="built_in">accessPrivateMembers</span>(obj); <span class="comment">// 调用友元类的方法</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>友元关系没有对称性，如果 <code>B</code> 是 <code>A</code> 的友元， <code>A</code> 未必是 <code>B</code> 的友元。</p>
+<p>友元关系没有传递性，即如果 <code>B</code> 是 <code>A</code> 的友元，<code>C</code> 是 <code>B</code> 的友元，不代表 <code>C</code> 可以访问 <code>A</code> 的所有成员。</p>
+<p>上面的友元称为<strong>友元类</strong>，我们还可以将一个函数声明为一个类的友元，称为<strong>友元函数</strong>，如下</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MyClass</span> &#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="type">int</span> privateVar;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">MyClass</span>() : <span class="built_in">privateVar</span>(<span class="number">0</span>) &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 声明友元函数</span></span><br><span class="line">    <span class="function"><span class="keyword">friend</span> <span class="type">void</span> <span class="title">accessPrivateMembers</span><span class="params">(MyClass&amp; obj)</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义友元函数</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">accessPrivateMembers</span><span class="params">(MyClass&amp; obj)</span> </span>&#123;</span><br><span class="line">    obj.privateVar = <span class="number">42</span>; <span class="comment">// 可以访问私有成员变量</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    MyClass obj;</span><br><span class="line">    <span class="built_in">accessPrivateMembers</span>(obj); <span class="comment">// 调用友元函数</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="2-生命周期">2 生命周期</h2>
+<p>先解释一下两个不同的概念：<strong>作用域</strong>和<strong>生命周期</strong>。<strong>作用域</strong>是一个空间概念，指的是在代码的哪些地方可以访问这个对象；<strong>生命周期</strong>是一个时间概念，指的是对象在内存中存在的时间段。</p>
+<p>不同类型的对象有着不同的作用域和生命周期，具体而言可以分为三类：局部对象、全局对象、静态对象</p>
+<p>先丢一个汇总表格在这里方便以后查找：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">type</th>
+<th style="text-align:center">scope</th>
+<th style="text-align:center">lifetime</th>
+<th style="text-align:center">init.time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">local variable</td>
+<td style="text-align:center">in {}</td>
+<td style="text-align:center">in {}</td>
+<td style="text-align:center">at the definition line</td>
+</tr>
+<tr>
+<td style="text-align:center">global variable</td>
+<td style="text-align:center">global</td>
+<td style="text-align:center">global</td>
+<td style="text-align:center">at the definition line, before main()</td>
+</tr>
+<tr>
+<td style="text-align:center">static local variable</td>
+<td style="text-align:center">in {}</td>
+<td style="text-align:center">global</td>
+<td style="text-align:center">the first time executed</td>
+</tr>
+<tr>
+<td style="text-align:center">static global variable</td>
+<td style="text-align:center">in life</td>
+<td style="text-align:center">global</td>
+<td style="text-align:center">as global variable</td>
+</tr>
+<tr>
+<td style="text-align:center">member variable</td>
+<td style="text-align:center">in class</td>
+<td style="text-align:center">as the object</td>
+<td style="text-align:center">at the creation of that object</td>
+</tr>
+<tr>
+<td style="text-align:center">static member variable</td>
+<td style="text-align:center">in class</td>
+<td style="text-align:center">global</td>
+<td style="text-align:center">at the definition line, before main()</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-1-Local-Object">2.1 Local Object</h3>
+<p>局部对象（Local Object）是指在函数或代码块内部定义的对象。当代码块结束时，局部对象会被自动销毁，析构函数会被调用。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyClass</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">MyClass</span>() &#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;构造函数被调用&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ~<span class="built_in">MyClass</span>() &#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;析构函数被调用&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">function</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    MyClass localObj; <span class="comment">// 定义局部对象</span></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;函数内部&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">&#125; <span class="comment">// localObj 在这里被销毁</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">function</span>();</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;函数外部&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* </span></span><br><span class="line"><span class="comment"> * 输出结果：</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * 构造函数被调用</span></span><br><span class="line"><span class="comment"> * 函数内部</span></span><br><span class="line"><span class="comment"> * 析构函数被调用</span></span><br><span class="line"><span class="comment"> * 函数外部 </span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+<p>我上一节提过，对象其实就是类的实例，但一个类中可能还有别的变量。对于这些变量（也称字段 field），它们的生命周期与对象的生命周期相同。</p>
+<h3 id="2-2-Global-Object">2.2 Global Object</h3>
+<p>全局对象是指在所有函数之外定义的对象。全局对象在程序启动时创建，并在程序结束时销毁</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> globalVar = <span class="number">10</span>; <span class="comment">// 全局变量</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">printGlobalVar</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Global variable: &quot;</span> &lt;&lt; globalVar &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">printGlobalVar</span>(); <span class="comment">// 输出: Global variable: 10</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果需要在多个文件中访问全局变量，可以使用 extern 关键字，示例如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// global.h</span></span><br><span class="line"><span class="meta">#<span class="keyword">ifndef</span> GLOBAL_H</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> GLOBAL_H</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">extern</span> <span class="type">int</span> globalVar; <span class="comment">// 声明全局变量</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">printGlobalVar</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span> <span class="comment">// GLOBAL_H</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// global.cpp</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;global.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> globalVar = <span class="number">10</span>; <span class="comment">// 定义全局变量</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">printGlobalVar</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Global variable: &quot;</span> &lt;&lt; globalVar &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// main.cpp</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;global.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">printGlobalVar</span>(); <span class="comment">// 输出: Global variable: 10</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-3-Static">2.3 Static</h3>
+<p>在程序的生命周期内，静态变量只分配一次内存，并且在整个程序运行期间都存在。这意味着它们的值在函数调用之间保持不变。下面介绍几类静态变量</p>
+<h4 id="静态全局变量">静态全局变量</h4>
+<p>静态全局变量是一种特殊的变量，它的作用域仅限于定义它的文件。这意味着它不能被其他文件访问，从而实现了封装和信息隐藏</p>
+<p>但我们不推荐使用这种方式来限制访问，因为 C++ 提供了其他更合适的访问控制机制（如 private 和 protected）</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 静态全局变量</span></span><br><span class="line"><span class="type">static</span> <span class="type">int</span> counter = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">incrementCounter</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    counter++;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">printCounter</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Counter: &quot;</span> &lt;&lt; counter &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">incrementCounter</span>();</span><br><span class="line">    <span class="built_in">printCounter</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="静态局部变量">静态局部变量</h4>
+<p>静态局部变量的作用域仅限于定义它的函数或代码块，但其生命周期贯穿整个程序运行期间</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">incrementCounter</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 静态局部变量</span></span><br><span class="line">    <span class="type">static</span> <span class="type">int</span> counter = <span class="number">0</span>;</span><br><span class="line">    counter++;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Counter: &quot;</span> &lt;&lt; counter &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">incrementCounter</span>(); <span class="comment">// 输出: Counter: 1</span></span><br><span class="line">    <span class="built_in">incrementCounter</span>(); <span class="comment">// 输出: Counter: 2</span></span><br><span class="line">    <span class="built_in">incrementCounter</span>(); <span class="comment">// 输出: Counter: 3</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="静态成员变量">静态成员变量</h4>
+<p>静态成员变量是属于类而不是类的某个对象的变量。<strong>它们在所有对象之间共享</strong>，并且在程序开始时初始化，在程序结束时销毁</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyClass</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// 静态成员变量声明</span></span><br><span class="line">    <span class="type">static</span> <span class="type">int</span> staticVar;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">static</span> <span class="type">void</span> <span class="title">printStaticVar</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Static Variable: &quot;</span> &lt;&lt; staticVar &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 静态成员变量定义和初始化</span></span><br><span class="line"><span class="type">int</span> MyClass::staticVar = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 访问和修改静态成员变量</span></span><br><span class="line">    MyClass::<span class="built_in">printStaticVar</span>(); <span class="comment">// 输出: Static Variable: 0</span></span><br><span class="line">    MyClass::staticVar = <span class="number">5</span>;  <span class="comment">// 可以直接通过类名来访问静态成员变量</span></span><br><span class="line">    MyClass::<span class="built_in">printStaticVar</span>(); <span class="comment">// 输出: Static Variable: 5</span></span><br><span class="line"></span><br><span class="line">    MyClass obj1, obj2;</span><br><span class="line">    obj<span class="number">1.</span>staticVar = <span class="number">10</span>;</span><br><span class="line">    obj<span class="number">2.</span><span class="built_in">printStaticVar</span>(); <span class="comment">// 输出: Static Variable: 10</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>静态成员变量可以配合静态成员函数一起使用。静态成员函数是属于类而不是类的某个对象的函数。它们可以在没有对象实例的情况下调用，并且只能访问静态成员变量和其他静态成员函数</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyClass</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// 静态成员函数声明</span></span><br><span class="line">    <span class="function"><span class="type">static</span> <span class="type">void</span> <span class="title">printMessage</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 静态成员变量声明</span></span><br><span class="line">    <span class="type">static</span> <span class="type">int</span> staticVar;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 静态成员函数定义</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">MyClass::printMessage</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Hello from static member function!&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 静态成员变量定义和初始化</span></span><br><span class="line"><span class="type">int</span> MyClass::staticVar = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 调用静态成员函数</span></span><br><span class="line">    MyClass::<span class="built_in">printMessage</span>(); <span class="comment">// 输出: Hello from static member function!</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 访问和修改静态成员变量</span></span><br><span class="line">    MyClass::staticVar = <span class="number">5</span>;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Static Variable: &quot;</span> &lt;&lt; MyClass::staticVar &lt;&lt; std::endl; <span class="comment">// 输出: Static Variable: 5</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-4-存储位置">2.4  存储位置</h3>
+<p>也稍微提一下，分为以下四种：</p>
+<ul>
+<li><strong>栈（stack）</strong>
+<ul>
+<li>栈用于存储局部变量和函数调用信息（如返回地址、参数等）</li>
+<li>由于栈的大小通常限制于系统或编译器设置，因此不适合用来存储需要大量空间的数据</li>
+</ul>
+</li>
+<li><strong>堆（heap）</strong>
+<ul>
+<li>堆用于动态内存分配，即程序运行期间根据需求进行内存分配的地方</li>
+<li>使用 new 或 malloc() 等操作符/函数可以在堆上分配内存，并使用 delete 或 free() 来释放这些内存</li>
+</ul>
+</li>
+<li><strong>静态存储区（Static Storage）</strong>
+<ul>
+<li>这里存放的是全局变量、静态局部变量和静态全局变量</li>
+</ul>
+</li>
+<li><strong>常量区</strong>
+<ul>
+<li>用于存放常量数据（如字符串字面量）</li>
+</ul>
+</li>
+</ul>
+<h2 id="3-引用">3 引用</h2>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/oop/">oop</a></div><div class="post-share"><div class="social-share" data-image="/image/star.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/01/16/oop1/" title="Lec1 Using Object"><img class="cover" src="/image/star.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-16</div><div class="info-item-2">Lec1 Using Object</div></div><div class="info-2"><div class="info-item-1">opp，从入门到XX</div></div></div></a><a class="pagination-related" href="/2026/01/16/oop0/" title="oop笔记索引"><img class="cover" src="/image/star.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-16</div><div class="info-item-2">oop笔记索引</div></div><div class="info-2"><div class="info-item-1">看似oop，实为cpp</div></div></div></a><a class="pagination-related" href="/2026/01/20/oop2/" title="Lec2 Grouping Objects"><img class="cover" src="/image/star.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-20</div><div class="info-item-2">Lec2 Grouping Objects</div></div><div class="info-2"><div class="info-item-1">介绍了STL，C++ 中的一类标准库</div></div></div></a><a class="pagination-related" href="/2026/02/01/oop3/" title="Lec3 Defining Class"><img class="cover" src="/image/star.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-02-01</div><div class="info-item-2">Lec3 Defining Class</div></div><div class="info-2"><div class="info-item-1">介绍了类的概念以及相关的语法，还有一些头文件操作</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">樂Yi安</div><div class="author-info-description">主不在乎，我在乎</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">63</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">14</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/FiangLiang"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/FiangLiang" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:1244928983@qq.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #24292e;"></i></a><a class="social-icon" href="tencent://AddContact/?fromId=45&amp;fromSubId=1&amp;subcmd=all&amp;uin=1244928983" target="_blank" title="QQ"><i class="fab fa-qq" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">千山翻遍，愿你柔软（2025/12/12）</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">Lec4 Inside Object</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E8%AE%BF%E9%97%AE%E6%9D%83%E9%99%90"><span class="toc-number">1.1.</span> <span class="toc-text">1 访问权限</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-public"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1 public</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-private"><span class="toc-number">1.1.2.</span> <span class="toc-text">1.2 private</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-protected"><span class="toc-number">1.1.3.</span> <span class="toc-text">1.3 protected</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-%E5%8F%8B%E5%85%83"><span class="toc-number">1.1.4.</span> <span class="toc-text">1.4 友元</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-number">1.2.</span> <span class="toc-text">2 生命周期</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-Local-Object"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1 Local Object</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-Global-Object"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.2 Global Object</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-Static"><span class="toc-number">1.2.3.</span> <span class="toc-text">2.3 Static</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F"><span class="toc-number">1.2.3.1.</span> <span class="toc-text">静态全局变量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F"><span class="toc-number">1.2.3.2.</span> <span class="toc-text">静态局部变量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F"><span class="toc-number">1.2.3.3.</span> <span class="toc-text">静态成员变量</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-%E5%AD%98%E5%82%A8%E4%BD%8D%E7%BD%AE"><span class="toc-number">1.2.4.</span> <span class="toc-text">2.4  存储位置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%BC%95%E7%94%A8"><span class="toc-number">1.3.</span> <span class="toc-text">3 引用</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/04/11/oop4/" title="Lec4 Inside Object"><img src="/image/star.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Lec4 Inside Object"/></a><div class="content"><a class="title" href="/2026/04/11/oop4/" title="Lec4 Inside Object">Lec4 Inside Object</a><time datetime="2026-04-11T02:21:04.295Z" title="发表于 2026-04-11 10:21:04">2026-04-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/29/ca2/" title="Memory Hierarchy Design"><img src="/image/dedication.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Memory Hierarchy Design"/></a><div class="content"><a class="title" href="/2026/03/29/ca2/" title="Memory Hierarchy Design">Memory Hierarchy Design</a><time datetime="2026-03-29T08:37:22.452Z" title="发表于 2026-03-29 16:37:22">2026-03-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/22/ds3/" title="Lec 3 Introduction to SQL"><img src="/image/forever.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Lec 3 Introduction to SQL"/></a><div class="content"><a class="title" href="/2026/03/22/ds3/" title="Lec 3 Introduction to SQL">Lec 3 Introduction to SQL</a><time datetime="2026-03-22T11:29:48.955Z" title="发表于 2026-03-22 19:29:48">2026-03-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/12/ds2/" title="Lec 2 Relational Model"><img src="/image/forever.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Lec 2 Relational Model"/></a><div class="content"><a class="title" href="/2026/03/12/ds2/" title="Lec 2 Relational Model">Lec 2 Relational Model</a><time datetime="2026-03-12T09:46:31.443Z" title="发表于 2026-03-12 17:46:31">2026-03-12</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/08/iaaap1/" title="Chap 1 Basic Concepts and Programming Introduction"><img src="/image/praying.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Chap 1 Basic Concepts and Programming Introduction"/></a><div class="content"><a class="title" href="/2026/03/08/iaaap1/" title="Chap 1 Basic Concepts and Programming Introduction">Chap 1 Basic Concepts and Programming Introduction</a><time datetime="2026-03-08T15:31:51.510Z" title="发表于 2026-03-08 23:31:51">2026-03-08</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2025 - 2026 By 樂Yi安</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div id="running-time"></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><div class="js-pjax"><script>(async () => {
+  const showKatex = () => {
+    document.querySelectorAll('#article-container .katex').forEach(el => el.classList.add('katex-show'))
+  }
+
+  if (!window.katex_js_css) {
+    window.katex_js_css = true
+    await btf.getCSS('https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css')
+    if (true) {
+      await btf.getScript('https://cdn.jsdelivr.net/npm/katex/dist/contrib/copy-tex.min.js')
+    }
+  }
+
+  showKatex()
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const initValine = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyValine = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const valineConfig = {
+      el: '#vcomment',
+      appId: 'HVX9kRRbh0oljKrbF5PNkI6n-gzGzoHsz',
+      appKey: 'SKpeFJ7zkFjz1Vmf3SzquUsz',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      visitor: false,
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || window.location.pathname
+    }
+
+    new Valine(valineConfig)
+  }
+
+  const loadValine = async (el, path) => {
+    if (typeof Valine === 'function') {
+      initValine(el, path)
+    } else {
+      await btf.getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js')
+      initValine(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Valine' === 'Valine'
+      ? window.shuoshuoComment = { loadComment: loadValine }
+      : window.loadOtherComment = loadValine
+    return
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})()</script></div><div class="aplayer no-destroy" data-id="10164556996" data-server="netease" data-type="playlist"   data-order="list" data-fixed="true" data-preload="auto" data-autoplay="false" data-mutex="true" ></div><script src="/js/title.js"></script><script>setInterval(()=>{let create_time=Math.round(new Date("2025-01-15-00:00:00").getTime()/1000);let timestamp=Math.round((new Date().getTime()+8*60*60*1000)/1000);let second=timestamp-create_time;let time=new Array(0,0,0,0,120);if(second>=365*24*3600){time[0]=parseInt(second/(365*24*3600));second%=365*24*3600}if(second>=24*3600){time[1]=parseInt(second/(24*3600));second%=24*3600}if(second>=3600){time[2]=parseInt(second/3600);second%=3600}if(second>=60){time[3]=parseInt(second/60);second%=60}if(second>0){time[4]=second}currentTimeHtml='小破站一共不安全运行 '+time[0]+' 年 '+time[1]+' 天 '+time[2]+' 时 '+time[3]+' 分 '+time[4]+' 秒';var elementById=document.getElementById('running-time');if(elementById){elementById.innerHTML=currentTimeHtml}},1000);</script><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div><!-- hexo injector body_end start --><script data-pjax>
+    function butterfly_categories_card_injector_config(){
+      var parent_div_git = document.getElementById('recent-posts');
+      var item_html = '<style>li.categoryBar-list-item{width:32.3%;}.categoryBar-list{max-height: 190px;overflow:auto;}.categoryBar-list::-webkit-scrollbar{width:0!important}@media screen and (max-width: 650px){.categoryBar-list{max-height: 160px;}}</style><div class="recent-post-item" style="height:auto;width:100%;padding:0px;"><div id="categoryBar"><ul class="categoryBar-list"><li class="categoryBar-list-item" style="background:url(https://npm.elemecdn.com/akilar-candyassets/image/cover1.webp);"> <a class="categoryBar-list-link" href="categories/个人杂谈/">个人杂谈</a><span class="categoryBar-list-count">4</span><span class="categoryBar-list-descr"></span></li><li class="categoryBar-list-item" style="background:url(https://npm.elemecdn.com/akilar-candyassets/image/cover2.webp);"> <a class="categoryBar-list-link" href="categories/课外技能/">课外技能</a><span class="categoryBar-list-count">3</span><span class="categoryBar-list-descr"></span></li><li class="categoryBar-list-item" style="background:url(https://npm.elemecdn.com/akilar-candyassets/image/cover3.webp);"> <a class="categoryBar-list-link" href="categories/课内拓展/">课内拓展</a><span class="categoryBar-list-count">1</span><span class="categoryBar-list-descr"></span></li><li class="categoryBar-list-item" style="background:url(https://npm.elemecdn.com/akilar-candyassets/image/cover4.webp);"> <a class="categoryBar-list-link" href="categories/解题记录/">解题记录</a><span class="categoryBar-list-count">2</span><span class="categoryBar-list-descr"></span></li><li class="categoryBar-list-item" style="background:url(https://npm.elemecdn.com/akilar-candyassets/image/cover5.webp);"> <a class="categoryBar-list-link" href="categories/课程笔记/">课程笔记</a><span class="categoryBar-list-count">53</span><span class="categoryBar-list-descr"></span></li></ul></div></div>';
+      console.log('已挂载butterfly_categories_card')
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+      }
+    if( document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    butterfly_categories_card_injector_config()
+    }
+  </script><script data-pjax>
+  function butterfly_clock_anzhiyu_injector_config(){
+    var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+    var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img class="entered loading" id="card-clock-loading" src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading"/></div></div></div></div></div>';
+    console.log('已挂载butterfly_clock_anzhiyu')
+    if(parent_div_git) {
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var qweather_key = '695758cf7806402a9519355b59810fcb';
+  var gaud_map_key = '7d51e84627335448e294a26dd2249a2a';
+  var baidu_ak_key = 'undefined';
+  var flag = 0;
+  var clock_rectangle = '112.982279,28.19409';
+  var clock_default_rectangle_enable = 'false';
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  </script><script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script><script data-pjax src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.js"></script><div class="js-pjax"><script async="async">var arr = document.getElementsByClassName('recent-post-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '1.5s');
+    arr[i].setAttribute('data-wow-delay', '200ms');
+    arr[i].setAttribute('data-wow-offset', '30');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-widget');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '');
+    arr[i].setAttribute('data-wow-delay', '200ms');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('flink-list-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__flipInY');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('flink-list-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__animated');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('article-sort-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__slideInRight');
+    arr[i].setAttribute('data-wow-duration', '1.5s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('site-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__flipInY');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('site-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__animated');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script></div><script defer src="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/wow.min.js"></script><script defer src="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/wow_init.js"></script><!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body></html>
