@@ -1,0 +1,511 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Lec 4 Intermediate SQL | 方宅十亩</title><meta name="author" content="樂Yi安"><meta name="copyright" content="樂Yi安"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="对SQL语言的进一步拓展">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lec 4 Intermediate SQL">
+<meta property="og:url" content="http://example.com/2026/04/12/ds4/index.html">
+<meta property="og:site_name" content="方宅十亩">
+<meta property="og:description" content="对SQL语言的进一步拓展">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/image/forever.png">
+<meta property="article:published_time" content="2026-04-12T02:23:52.380Z">
+<meta property="article:modified_time" content="2026-04-12T02:26:44.910Z">
+<meta property="article:author" content="樂Yi安">
+<meta property="article:tag" content="ds">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/image/forever.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Lec 4 Intermediate SQL",
+  "url": "http://example.com/2026/04/12/ds4/",
+  "image": "http://example.com/image/forever.png",
+  "datePublished": "2026-04-12T02:23:52.380Z",
+  "dateModified": "2026-04-12T02:26:44.910Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "樂Yi安",
+      "url": "http://example.com/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.jpg"><link rel="canonical" href="http://example.com/2026/04/12/ds4/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Lec 4 Intermediate SQL',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-categories-card@1.0.0/lib/categorybar.css"><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/animate.min.css" media="print" onload="this.media='screen'"><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.css" /><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background: linear-gradient(0deg,rgba(247,149,51,0.1) 0,rgba(243,112,85,0.1) 15%,rgba(239,78,123,0.1) 30%,rgba(161,102,171,0.1) 44%,rgba(80,115,184,0.1) 58%,rgba(16,152,173,0.1) 72%,rgba(7,179,155,0.1) 86%,rgba(109,186,130,0.1) 100%);;"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">64</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">14</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-envelope"></i><span> 留言板</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/image/forever.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">方宅十亩</span></a><a class="nav-page-title" href="/"><span class="site-name">Lec 4 Intermediate SQL</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-envelope"></i><span> 留言板</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Lec 4 Intermediate SQL</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-04-12T02:23:52.380Z" title="发表于 2026-04-12 10:23:52">2026-04-12</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-04-12T02:26:44.910Z" title="更新于 2026-04-12 10:26:44">2026-04-12</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">课程笔记</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1>Lec 4 Intermediate SQL</h1>
+<p>上一章讲的是 SQL 的基础用法，这一章我们介绍一些更高级的用法</p>
+<h2 id="1-Join-Operations">1 Join Operations</h2>
+<p>JOIN 语句是由 Join Type 和 Join Condition 组成的</p>
+<h3 id="1-1-Join-Type">1.1 Join Type</h3>
+<p>下面内容可以参考之前的<a target="_blank" rel="noopener" href="https://fiangliang.github.io/2026/03/12/ds2/#Natural-Join">关系代数</a></p>
+<p>连接类型影响行的数量，有以下四类：</p>
+<ul>
+<li>Inner Join：只返回两个表中匹配的行</li>
+<li>Left Join：返回左表中的所有行，以及右表中匹配的行。如果右表中没有匹配的行，则结果中包含NULL值</li>
+<li>Right Join：返回右表中的所有行，以及左表中匹配的行。如果左表中没有匹配的行，则结果中包含NULL值</li>
+<li>Full Join：返回两个表中的所有行。如果某个表中没有匹配的行，则结果中包含NULL值</li>
+</ul>
+<p>如果没有指明 Join Type，默认为 Inner Join</p>
+<h3 id="1-2-Join-Condition">1.2 Join Condition</h3>
+<p>连接条件分为三类：</p>
+<ul>
+<li>
+<p>自然连接（natural）</p>
+<p>连接条件是两个表中具有相同名称的列</p>
+</li>
+<li>
+<p>条件连接（on）</p>
+<p>使用 on 连接时，必须指定连接条件。连接条件可以是任意的布尔表达式，包括比较运算符、逻辑运算符，另外,这样的连接会返回所有列，包括连接条件中使用的列的两个副本</p>
+</li>
+<li>
+<p>等值连接（using）</p>
+<ul>
+<li>连接条件是指定一个或多个共享的列名，这些列在两个表中必须具有相同的名称</li>
+<li>与 NATURAL JOIN 不同，USING 子句允许你明确指定要用于连接的列，而不是自动使用所有同名列</li>
+</ul>
+</li>
+</ul>
+<p>如果没有指明 Join Condition，默认为自然连接</p>
+<p>具体语法就不写了，可以参照下面的例子：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span></span><br><span class="line"><span class="keyword">FROM</span> (</span><br><span class="line">    <span class="keyword">SELECT</span> <span class="operator">*</span></span><br><span class="line">    <span class="keyword">FROM</span> student</span><br><span class="line">    <span class="keyword">WHERE</span> dept_name <span class="operator">=</span> <span class="string">&#x27;Comp. Sci.&#x27;</span></span><br><span class="line">) <span class="keyword">NATURAL</span> <span class="keyword">FULL</span> <span class="keyword">OUTER</span> <span class="keyword">JOIN</span> (</span><br><span class="line">    <span class="keyword">SELECT</span> <span class="operator">*</span></span><br><span class="line">    <span class="keyword">FROM</span> takes</span><br><span class="line">    <span class="keyword">WHERE</span> semester <span class="operator">=</span> <span class="string">&#x27;Spring&#x27;</span> <span class="keyword">AND</span> <span class="keyword">year</span> <span class="operator">=</span> <span class="number">2017</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<h2 id="2-View">2 View</h2>
+<p>视图是一个虚拟表，它本身不存储数据，而是存储查询的定义。当查询视图时，数据库系统会执行视图的定义查询，并返回结果集。</p>
+<p>不同于一般视图（只存储查询定义），<strong>物化视图</strong>(materialized views) 还存储了查询结果的实际数据副本。</p>
+<h3 id="2-1-View-Definition">2.1 View Definition</h3>
+<p>创建视图的语法为：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">VIEW</span> v <span class="keyword">AS</span> <span class="operator">&lt;</span>query expression<span class="operator">&gt;</span></span><br></pre></td></tr></table></figure>
+<p>例如：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">VIEW</span> faculty_salary <span class="keyword">AS</span></span><br><span class="line"><span class="keyword">SELECT</span> ID, name, salary</span><br><span class="line"><span class="keyword">FROM</span> instructor</span><br><span class="line"><span class="keyword">WHERE</span> dept_name <span class="operator">=</span> <span class="string">&#x27;Finance&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>虽然看起来与 WITH 子句很像，但 WITH 子句创建的只是临时的关系，而 CREATE VIEW 创建的视图可以在后面一直使用，直到被手动销毁或程序中止</li>
+<li>使用视图就像使用一般的关系一样，没有特别的语法（甚至可以用来定义另一个视图）</li>
+</ul>
+<h3 id="2-2-Update-of-a-View">2.2 Update of a View</h3>
+<p>对视图的修改是一件很麻烦的事，因为对数据库视图的修改必须被翻译为对位于数据库逻辑模型中的真实关系的修改</p>
+<p>所以，除了以下列出的有限情况，通常不允许对视图关系进行修改：</p>
+<ul>
+<li>FROM 子句仅包含一个数据库关系</li>
+<li>SELECT 子句仅包含来自这个关系的属性名，并且不允许出现任何表达式、聚合函数或者 DISTINCT 约束</li>
+<li>任何没有出现在 SELECT 子句的属性会被设为 null，因此也不允许使用 NOT NULL 或 PRIMARY KEY 约束</li>
+<li>查询语句不能有 GROUP BY 或 HAVING 子句</li>
+</ul>
+<p>即使视图是可更新的，仍然有一个问题：在使用关于视图的 INSERT 语句时，可能因为不满足视图里的查询语句条件，无法将数据插入到视图中，但此时原关系会接受这个新插入的数据。</p>
+<h2 id="3-Transactions">3 Transactions</h2>
+<p><strong>事务</strong>(transaction)：一个查询 / 更新语句的序列。当 SQL 语句被执行的时候，我们就开启了一个事务。</p>
+<p>用以下 SQL 语句之一作为事务的结束：</p>
+<ul>
+<li>COMMIT WORK：提交(commit) 当前事务，也就是说，它让由事务实现的更新操作变为对数据库的永久修改。事务提交之后，新的事务就开始了</li>
+<li>ROLLBACK WORK：回滚(rollback) 当前事务，也就是说，它撤销所有先前由事务内的 SQL 语句执行的更新。因此，数据库的状态就会恢复到事务的第一条语句被执行之前的状态</li>
+</ul>
+<p>事务的提交和回滚操作体现了数据库的一种抽象——<strong>原子性</strong>(atomicity)，即不可分割的意思：</p>
+<ul>
+<li>比如对于事务内的一组更新语句，如果执行其中一条语句时发生错误，那么就会撤销前面语句的所有更新效果，这样保证数据库不会处于部分更新状态</li>
+</ul>
+<h2 id="4-Integrity-Constraints">4 Integrity Constraints</h2>
+<p><strong>完整性约束</strong>(integrity constraints) 确保授权用户对数据库的改变<strong>不会破坏数据一致性</strong></p>
+<p>下面介绍常见的几类完整性约束</p>
+<h3 id="4-1-Not-Null-Constraint">4.1 Not Null Constraint</h3>
+<p>由于 null 值是所有域的成员，因此默认情况下 null 值在每个属性中都是合法值。但是在某些场合下，不应该出现包含 null 值的元组，那么此时就可以使用 NOT NULL 约束来禁止 null 值的出现。</p>
+<p>PRIMARY KEY 约束自动带有这一约束，所以此时无需显式指出 NOT NULL</p>
+<h3 id="4-2-Primary-Key-Constraints">4.2 Primary Key Constraints</h3>
+<p>主键约束确保列中的值唯一且不能为空，另外主键约束可以用于单列或多列</p>
+<h3 id="4-3-Unique-Constraint">4.3 Unique Constraint</h3>
+<p>UNIQUE 约束的语法为：UNIQUE(<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mrow><mi>j</mi><mn>1</mn></mrow></msub><mo separator="true">,</mo><msub><mi>A</mi><mrow><mi>j</mi><mn>2</mn></mrow></msub><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo separator="true">,</mo><msub><mi>A</mi><mrow><mi>j</mi><mi>m</mi></mrow></msub></mrow><annotation encoding="application/x-tex">A_{j1}, A_{j2}, ..., A_{jm}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9694em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">...</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">jm</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span>)，这会构成一个超键（即在同一关系中，对于列出来的属性，没有两个元组的值是相等的）</p>
+<p>UNIQUE 约束允许 null 的存在（注意 null 值和任何值都不相等，包括其自身）</p>
+<h3 id="4-4-The-Check-Clause">4.4 The Check Clause</h3>
+<p>可以在关系声明时使用 CHECK(P) 子句，让关系中的每个元组必须满足谓词 P 的条件</p>
+<ul>
+<li>只要不是 false，CHECK 子句的条件就会成立，因此 null 值可以顺利通过检查（除非有 NOT NULL 的约束）</li>
+<li>CHECK 可以单独出现，也可以紧跟在属性后面。一般情况下，对于单个属性的检查，采用后者的方式；而对于更为复杂的检查，则采用前者的方式</li>
+</ul>
+<h3 id="4-5-Referential-Integrity">4.5 Referential Integrity</h3>
+<p><strong>参照完整性约束</strong>：对于某个关系（称为<strong>参照关系</strong>）的指定属性值也要出现在另一个关系（称为<strong>被参照关系</strong>）的对应属性中</p>
+<p>在 SQL 中，参照完整性约束由外键实现，语法为：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FOREIGN KEY</span> (dept_name) <span class="keyword">REFERENCES</span> department</span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<p>默认情况下，外键会参照被参照关系中的主键</p>
+</li>
+<li>
+<p>SQL 也支持参照被参照关系的指定属性表中的属性，语法为：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FOREIGN KEY</span> (dept_name) <span class="keyword">REFERENCES</span> department(dept_name)</span><br></pre></td></tr></table></figure>
+<p>这个指定属性表必须被声明为被参照关系的超键，可通过 PRIMARY KEY 或 UNIQUE 约束实现</p>
+</li>
+<li>
+<p>对于在被参照关系上的更新和删除行为，如果违反约束，系统必须采取行动来改变参照关系的元组，以恢复约束。对于以下语句：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE TABLE</span> course (</span><br><span class="line">    <span class="keyword">FOREIGN KEY</span> (dept_name) <span class="keyword">REFERENCES</span> department</span><br><span class="line">    <span class="keyword">ON</span> <span class="keyword">DELETE</span> CASCADE</span><br><span class="line">    <span class="keyword">ON</span> <span class="keyword">UPDATE</span> CASCADE</span><br><span class="line">    ...</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>以删除操作为例，如果要删除 department 里的元组，系统会通过级联(cascade) 删除的方式删除在 course 中参照在 department 中被删除元组的元组</p>
+<ul>
+<li>ON DELETE CASCADE：当被参照表中被外键引用的行被删除时，参照表中所有引用该行的行也会被自动删除</li>
+<li>ON UPDATE CASCADE：当被参照中被外键引用的行的主键值被更新时，参照表中所有引用该主键值的行也会被自动更新为新的主键值</li>
+<li>除了 CASCADE 关键字外，还可以设置 SET NULL 或 SET DEFAULT，当违反约束时会触发这些操作</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-6-Assigning-Names-to-Constraints">4.6 Assigning Names to Constraints</h3>
+<p>使用关键字 CONSTRAINT 为约束赋予名称，这样便于之后使用或删除约束。比如：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- Assignment</span></span><br><span class="line">...</span><br><span class="line">salary <span class="type">NUMERIC</span>(<span class="number">8</span>, <span class="number">2</span>), <span class="keyword">CONSTRAINT</span> minsalary <span class="keyword">CHECK</span>(salary <span class="operator">&gt;</span> <span class="number">29000</span>),</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment">-- Deletion</span></span><br><span class="line"><span class="keyword">ALTER TABLE</span> instructor <span class="keyword">DROP</span> <span class="keyword">CONSTRAINT</span> minsalary;</span><br></pre></td></tr></table></figure>
+<h3 id="4-7-Assertion">4.7 Assertion</h3>
+<p><strong>断言</strong>(assertion) 是表达一种希望数据库一直满足的条件的一种谓词。创建断言的语法为：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> ASSERTION <span class="operator">&lt;</span>assertion<span class="operator">-</span>name<span class="operator">&gt;</span> <span class="keyword">CHECK</span> <span class="operator">&lt;</span>predicate<span class="operator">&gt;</span>;</span><br></pre></td></tr></table></figure>
+<p>例如：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> ASSERTION credits_earned_constraint <span class="keyword">CHECK</span> (</span><br><span class="line">    <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> (</span><br><span class="line">        <span class="keyword">SELECT</span> ID</span><br><span class="line">        <span class="keyword">FROM</span> student</span><br><span class="line">        <span class="keyword">WHERE</span> tot_cred <span class="operator">&lt;&gt;</span> (</span><br><span class="line">            <span class="keyword">SELECT</span> <span class="built_in">COALESCE</span>(<span class="built_in">SUM</span>(credits), <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">FROM</span> takes <span class="keyword">NATURAL</span> <span class="keyword">JOIN</span> course</span><br><span class="line">            <span class="keyword">WHERE</span> student.ID <span class="operator">=</span> takes.ID <span class="keyword">AND</span> grade <span class="keyword">IS</span> <span class="keyword">NOT NULL</span> <span class="keyword">AND</span> grade <span class="operator">&lt;&gt;</span> <span class="string">&#x27;F&#x27;</span></span><br><span class="line">        )</span><br><span class="line">    )</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>由于断言的测试会带来很大的开销，因此使用断言时需要当心。而在实际中，这样的高开销通常会让一些系统开发者忽视对断言的支持，或提供更易于测试的特殊断言形式</li>
+<li>因为 SQL 不提供一种 for all X, P(X) 的构造，因此只能用 not exists X such that not P(X) 这一等价形式表示</li>
+</ul>
+<h2 id="5-SQL-Data-Types-and-Schemas">5 SQL Data Types and Schemas</h2>
+<p>SQL 数据类型是用于定义表中列的类型和约束的。每个列都必须指定一个数据类型，以便数据库系统知道如何存储和处理该列的数据。</p>
+<p>上一章提到过一些基础的类型，这一章我们再来补充一二</p>
+<h3 id="5-1-User-Defined-Types">5.1 User-Defined Types</h3>
+<p>使用CREATE TYPE语句定义用户自定义类型，语法如下：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> type Dollars <span class="keyword">as</span> <span class="type">numeric</span> (<span class="number">12</span>,<span class="number">2</span>) <span class="keyword">final</span>;</span><br></pre></td></tr></table></figure>
+<p>然后，我们就可以使用自己定义的类型来创建表了:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create table</span> account (</span><br><span class="line">    id <span class="type">integer</span>,</span><br><span class="line">    balance Dollars</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<h3 id="5-2-Domain">5.2 Domain</h3>
+<p>使用 CREATE DOMAIN 创建值域，示例如下：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> domain degree_level <span class="type">varchar</span>(<span class="number">10</span>)</span><br><span class="line"><span class="keyword">constraint</span> degree_level_test</span><br><span class="line"><span class="keyword">check</span> (<span class="keyword">value</span> <span class="keyword">in</span> (’Bachelors’, ’Masters’, ’Doctorate’));</span><br></pre></td></tr></table></figure>
+<p>这条语句创建了一个名为degree_level的域，它基于varchar(10)数据类型，并添加了一个名为degree_level_test的约束，该约束确保该域的值只能是’Bachelors’、'Masters’或’Doctorate’中的一个。</p>
+<h3 id="5-3-Large-Object-Types">5.3 Large-Object Types</h3>
+<p>很多数据库系统需要存储包含大数据项的属性，比如照片、高分辨率的图像或视频等。因此 SQL 为字符数据（CLOB）和二进制数据（BLOB）提供了大对象数据类型，例如：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">book_review <span class="type">CLOB</span>(<span class="number">10</span>KB)</span><br><span class="line">image <span class="type">BLOB</span>(<span class="number">10</span>MB)</span><br><span class="line">movie <span class="type">BLOB</span>(<span class="number">2</span>GB)</span><br></pre></td></tr></table></figure>
+<h3 id="5-4-Type-Conversion">5.4 Type Conversion</h3>
+<p>虽然数据库系统支持部分数据类型的自动转换(conversion)，但有时我们需要显式转换，此时我们就可以使用表达式 CAST (e AS t)，将表达式 e 转换为类型 t</p>
+<h3 id="5-5-Default-Values">5.5 Default Values</h3>
+<p>在 CREATE TABLE 中，可以为指定属性赋予默认值，比如：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE TABLE</span> student (</span><br><span class="line">    ID          <span class="type">VARCHAR</span>(<span class="number">5</span>),</span><br><span class="line">    name        <span class="type">VARCHAR</span>(<span class="number">20</span>) <span class="keyword">NOT NULL</span>,</span><br><span class="line">    dept_name   <span class="type">VARCHAR</span>(<span class="number">20</span>),</span><br><span class="line">    tot_cred    <span class="type">NUMERIC</span>(<span class="number">3</span>, <span class="number">0</span>) <span class="keyword">DEFAULT</span> <span class="number">0</span>,</span><br><span class="line">    <span class="keyword">PRIMARY KEY</span> (ID)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<h2 id="6-Authorization">6 Authorization</h2>
+<p>对<strong>数据</strong>的<strong>授权</strong>(authorization) 分为以下几类：</p>
+<ul>
+<li>SELECT, 读取数据的授权</li>
+<li>INSERT, 插入新数据的授权</li>
+<li>UPDATE, 更新数据的授权</li>
+<li>DELETE, 删除数据的授权</li>
+</ul>
+<p>用户可以被授予对数据库模式的特权，允许创建 / 修改 / 删除关系。有时，获取某些特权的用户可以将特权授予(grant) 其他用户，也可以撤回(revoke) 其他用户的这一特权。</p>
+<h3 id="6-1-Granting-and-Revoking-of-Privileges">6.1 Granting and Revoking of Privileges</h3>
+<p>在 SQL 中，授予特权的语法为：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GRANT</span> <span class="operator">&lt;</span>privilege list<span class="operator">&gt;</span></span><br><span class="line"><span class="keyword">ON</span> <span class="operator">&lt;</span>relation name <span class="keyword">or</span> <span class="keyword">view</span> name<span class="operator">&gt;</span></span><br><span class="line"><span class="keyword">TO</span> <span class="operator">&lt;</span><span class="keyword">user</span><span class="operator">/</span>role list<span class="operator">&gt;</span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<p>privilege list（特权表）</p>
+<ul>
+<li>
+<p>包括四种：SELECT, INSERT, UPDATE, DELETE</p>
+</li>
+<li>
+<p>如果要授予全部特权的话，可以用关键字 ALL PRIVILEGES 表示</p>
+</li>
+</ul>
+</li>
+<li>
+<p>user/role list（用户/角色表）</p>
+<ul>
+<li>用户名 PUBLIC 指代全体用户，包括将来使用数据库系统的用户</li>
+</ul>
+</li>
+</ul>
+<p>撤回特权的语法与授予特权的语法基本一致：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">REVOKE</span> <span class="operator">&lt;</span>privilege list<span class="operator">&gt;</span></span><br><span class="line"><span class="keyword">ON</span> <span class="operator">&lt;</span>relation name <span class="keyword">or</span> <span class="keyword">view</span> name<span class="operator">&gt;</span></span><br><span class="line"><span class="keyword">TO</span> <span class="operator">&lt;</span><span class="keyword">user</span><span class="operator">/</span>role list<span class="operator">&gt;</span>;</span><br></pre></td></tr></table></figure>
+<p>默认情况下，撤回某个用户的特权后，该用户授予其他用户的特权也会被一并撤回，这种行为称为<strong>级联撤回</strong>(cascade revocation)</p>
+<p>在不少情况下，级联撤回的行为并不合适，此时我们可以使用 RESTRICT 关键字来阻止级联撤回，语法如下：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">REVOKE</span> <span class="keyword">SELECT</span> <span class="keyword">ON</span> department <span class="keyword">FROM</span> Amit, Satoshi RESTRICT;</span><br></pre></td></tr></table></figure>
+<h3 id="6-2-Roles">6.2 Roles</h3>
+<p>如果只能按用户来授予特权的话，会带来一定的不便。因此 SQL 支持按<strong>角色</strong>(roles) 授予特权的功能，使得授予特权这件事变得更加方便灵活。</p>
+<p>创建角色、为用户或其他角色授予某个角色的语法如下：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> ROLE dean;</span><br><span class="line"><span class="keyword">GRANT</span> instructor <span class="keyword">TO</span> dean;</span><br><span class="line"><span class="keyword">GRANT</span> dean <span class="keyword">TO</span> Satoshi;</span><br></pre></td></tr></table></figure>
+<h3 id="6-3-Transfer-of-Privleges">6.3 Transfer of Privleges</h3>
+<p>默认情况下，获取某些特权的用户不可以将特权授予其他用户，但只要在授予特权语句的末尾附加 WITH GRANT OPTION 子句，那么用户就有这一传递特权的特权了，语法如下：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GRANT</span> <span class="keyword">SELECT</span> <span class="keyword">ON</span> department <span class="keyword">TO</span> Amit <span class="keyword">WITH</span> <span class="keyword">GRANT</span> OPTION;</span><br></pre></td></tr></table></figure>
+<p>特定授权在用户之间的传递关系可以用<strong>授权图</strong>(authorization graph) 来表示：</p>
+<img src="/image/ds/authorization_graph.png" alt="authorization_graph" style="zoom: 67%;" />
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/ds/">ds</a></div><div class="post-share"><div class="social-share" data-image="/image/forever.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/03/08/ds1/" title="Lec 1 Introduction"><img class="cover" src="/image/forever.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-08</div><div class="info-item-2">Lec 1 Introduction</div></div><div class="info-2"><div class="info-item-1">数据库前后一共十五章，不过倒也不急，慢慢来吧</div></div></div></a><a class="pagination-related" href="/2026/03/08/ds0/" title="数据库笔记索引"><img class="cover" src="/image/forever.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-08</div><div class="info-item-2">数据库笔记索引</div></div><div class="info-2"><div class="info-item-1">感觉不简单……</div></div></div></a><a class="pagination-related" href="/2026/03/12/ds2/" title="Lec 2 Relational Model"><img class="cover" src="/image/forever.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-12</div><div class="info-item-2">Lec 2 Relational Model</div></div><div class="info-2"><div class="info-item-1">神奇的关系代数，梦回离散数学</div></div></div></a><a class="pagination-related" href="/2026/03/22/ds3/" title="Lec 3 Introduction to SQL"><img class="cover" src="/image/forever.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-22</div><div class="info-item-2">Lec 3 Introduction to SQL</div></div><div class="info-2"><div class="info-item-1">终于是到了SQL语言的介绍，且让我尝尝咸淡</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">樂Yi安</div><div class="author-info-description">主不在乎，我在乎</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">64</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">14</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/FiangLiang"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/FiangLiang" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:1244928983@qq.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #24292e;"></i></a><a class="social-icon" href="tencent://AddContact/?fromId=45&amp;fromSubId=1&amp;subcmd=all&amp;uin=1244928983" target="_blank" title="QQ"><i class="fab fa-qq" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">千山翻遍，愿你柔软（2025/12/12）</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">Lec 4 Intermediate SQL</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Join-Operations"><span class="toc-number">1.1.</span> <span class="toc-text">1 Join Operations</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-Join-Type"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1 Join Type</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-Join-Condition"><span class="toc-number">1.1.2.</span> <span class="toc-text">1.2 Join Condition</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-View"><span class="toc-number">1.2.</span> <span class="toc-text">2 View</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-View-Definition"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1 View Definition</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-Update-of-a-View"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.2 Update of a View</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Transactions"><span class="toc-number">1.3.</span> <span class="toc-text">3 Transactions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-Integrity-Constraints"><span class="toc-number">1.4.</span> <span class="toc-text">4 Integrity Constraints</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-Not-Null-Constraint"><span class="toc-number">1.4.1.</span> <span class="toc-text">4.1 Not Null Constraint</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-Primary-Key-Constraints"><span class="toc-number">1.4.2.</span> <span class="toc-text">4.2 Primary Key Constraints</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-Unique-Constraint"><span class="toc-number">1.4.3.</span> <span class="toc-text">4.3 Unique Constraint</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-The-Check-Clause"><span class="toc-number">1.4.4.</span> <span class="toc-text">4.4 The Check Clause</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-Referential-Integrity"><span class="toc-number">1.4.5.</span> <span class="toc-text">4.5 Referential Integrity</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-6-Assigning-Names-to-Constraints"><span class="toc-number">1.4.6.</span> <span class="toc-text">4.6 Assigning Names to Constraints</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-7-Assertion"><span class="toc-number">1.4.7.</span> <span class="toc-text">4.7 Assertion</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-SQL-Data-Types-and-Schemas"><span class="toc-number">1.5.</span> <span class="toc-text">5 SQL Data Types and Schemas</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-User-Defined-Types"><span class="toc-number">1.5.1.</span> <span class="toc-text">5.1 User-Defined Types</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-Domain"><span class="toc-number">1.5.2.</span> <span class="toc-text">5.2 Domain</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-Large-Object-Types"><span class="toc-number">1.5.3.</span> <span class="toc-text">5.3 Large-Object Types</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4-Type-Conversion"><span class="toc-number">1.5.4.</span> <span class="toc-text">5.4 Type Conversion</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-5-Default-Values"><span class="toc-number">1.5.5.</span> <span class="toc-text">5.5 Default Values</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-Authorization"><span class="toc-number">1.6.</span> <span class="toc-text">6 Authorization</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-Granting-and-Revoking-of-Privileges"><span class="toc-number">1.6.1.</span> <span class="toc-text">6.1 Granting and Revoking of Privileges</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-Roles"><span class="toc-number">1.6.2.</span> <span class="toc-text">6.2 Roles</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-3-Transfer-of-Privleges"><span class="toc-number">1.6.3.</span> <span class="toc-text">6.3 Transfer of Privleges</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/04/12/ds4/" title="Lec 4 Intermediate SQL"><img src="/image/forever.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Lec 4 Intermediate SQL"/></a><div class="content"><a class="title" href="/2026/04/12/ds4/" title="Lec 4 Intermediate SQL">Lec 4 Intermediate SQL</a><time datetime="2026-04-12T02:23:52.380Z" title="发表于 2026-04-12 10:23:52">2026-04-12</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/04/11/oop4/" title="Lec4 Inside Object"><img src="/image/star.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Lec4 Inside Object"/></a><div class="content"><a class="title" href="/2026/04/11/oop4/" title="Lec4 Inside Object">Lec4 Inside Object</a><time datetime="2026-04-11T02:21:04.295Z" title="发表于 2026-04-11 10:21:04">2026-04-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/29/ca2/" title="Memory Hierarchy Design"><img src="/image/dedication.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Memory Hierarchy Design"/></a><div class="content"><a class="title" href="/2026/03/29/ca2/" title="Memory Hierarchy Design">Memory Hierarchy Design</a><time datetime="2026-03-29T08:37:22.452Z" title="发表于 2026-03-29 16:37:22">2026-03-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/22/ds3/" title="Lec 3 Introduction to SQL"><img src="/image/forever.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Lec 3 Introduction to SQL"/></a><div class="content"><a class="title" href="/2026/03/22/ds3/" title="Lec 3 Introduction to SQL">Lec 3 Introduction to SQL</a><time datetime="2026-03-22T11:29:48.955Z" title="发表于 2026-03-22 19:29:48">2026-03-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/12/ds2/" title="Lec 2 Relational Model"><img src="/image/forever.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Lec 2 Relational Model"/></a><div class="content"><a class="title" href="/2026/03/12/ds2/" title="Lec 2 Relational Model">Lec 2 Relational Model</a><time datetime="2026-03-12T09:46:31.443Z" title="发表于 2026-03-12 17:46:31">2026-03-12</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2025 - 2026 By 樂Yi安</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div id="running-time"></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><div class="js-pjax"><script>(async () => {
+  const showKatex = () => {
+    document.querySelectorAll('#article-container .katex').forEach(el => el.classList.add('katex-show'))
+  }
+
+  if (!window.katex_js_css) {
+    window.katex_js_css = true
+    await btf.getCSS('https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css')
+    if (true) {
+      await btf.getScript('https://cdn.jsdelivr.net/npm/katex/dist/contrib/copy-tex.min.js')
+    }
+  }
+
+  showKatex()
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const initValine = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyValine = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const valineConfig = {
+      el: '#vcomment',
+      appId: 'HVX9kRRbh0oljKrbF5PNkI6n-gzGzoHsz',
+      appKey: 'SKpeFJ7zkFjz1Vmf3SzquUsz',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      visitor: false,
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || window.location.pathname
+    }
+
+    new Valine(valineConfig)
+  }
+
+  const loadValine = async (el, path) => {
+    if (typeof Valine === 'function') {
+      initValine(el, path)
+    } else {
+      await btf.getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js')
+      initValine(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Valine' === 'Valine'
+      ? window.shuoshuoComment = { loadComment: loadValine }
+      : window.loadOtherComment = loadValine
+    return
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})()</script></div><div class="aplayer no-destroy" data-id="10164556996" data-server="netease" data-type="playlist"   data-order="list" data-fixed="true" data-preload="auto" data-autoplay="false" data-mutex="true" ></div><script src="/js/title.js"></script><script>setInterval(()=>{let create_time=Math.round(new Date("2025-01-15-00:00:00").getTime()/1000);let timestamp=Math.round((new Date().getTime()+8*60*60*1000)/1000);let second=timestamp-create_time;let time=new Array(0,0,0,0,120);if(second>=365*24*3600){time[0]=parseInt(second/(365*24*3600));second%=365*24*3600}if(second>=24*3600){time[1]=parseInt(second/(24*3600));second%=24*3600}if(second>=3600){time[2]=parseInt(second/3600);second%=3600}if(second>=60){time[3]=parseInt(second/60);second%=60}if(second>0){time[4]=second}currentTimeHtml='小破站一共不安全运行 '+time[0]+' 年 '+time[1]+' 天 '+time[2]+' 时 '+time[3]+' 分 '+time[4]+' 秒';var elementById=document.getElementById('running-time');if(elementById){elementById.innerHTML=currentTimeHtml}},1000);</script><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div><!-- hexo injector body_end start --><script data-pjax>
+    function butterfly_categories_card_injector_config(){
+      var parent_div_git = document.getElementById('recent-posts');
+      var item_html = '<style>li.categoryBar-list-item{width:32.3%;}.categoryBar-list{max-height: 190px;overflow:auto;}.categoryBar-list::-webkit-scrollbar{width:0!important}@media screen and (max-width: 650px){.categoryBar-list{max-height: 160px;}}</style><div class="recent-post-item" style="height:auto;width:100%;padding:0px;"><div id="categoryBar"><ul class="categoryBar-list"><li class="categoryBar-list-item" style="background:url(https://npm.elemecdn.com/akilar-candyassets/image/cover1.webp);"> <a class="categoryBar-list-link" href="categories/个人杂谈/">个人杂谈</a><span class="categoryBar-list-count">4</span><span class="categoryBar-list-descr"></span></li><li class="categoryBar-list-item" style="background:url(https://npm.elemecdn.com/akilar-candyassets/image/cover2.webp);"> <a class="categoryBar-list-link" href="categories/课外技能/">课外技能</a><span class="categoryBar-list-count">3</span><span class="categoryBar-list-descr"></span></li><li class="categoryBar-list-item" style="background:url(https://npm.elemecdn.com/akilar-candyassets/image/cover3.webp);"> <a class="categoryBar-list-link" href="categories/课内拓展/">课内拓展</a><span class="categoryBar-list-count">1</span><span class="categoryBar-list-descr"></span></li><li class="categoryBar-list-item" style="background:url(https://npm.elemecdn.com/akilar-candyassets/image/cover4.webp);"> <a class="categoryBar-list-link" href="categories/解题记录/">解题记录</a><span class="categoryBar-list-count">2</span><span class="categoryBar-list-descr"></span></li><li class="categoryBar-list-item" style="background:url(https://npm.elemecdn.com/akilar-candyassets/image/cover5.webp);"> <a class="categoryBar-list-link" href="categories/课程笔记/">课程笔记</a><span class="categoryBar-list-count">54</span><span class="categoryBar-list-descr"></span></li></ul></div></div>';
+      console.log('已挂载butterfly_categories_card')
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+      }
+    if( document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    butterfly_categories_card_injector_config()
+    }
+  </script><div class="js-pjax"><script async="async">var arr = document.getElementsByClassName('recent-post-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '1.5s');
+    arr[i].setAttribute('data-wow-delay', '200ms');
+    arr[i].setAttribute('data-wow-offset', '30');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-widget');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '');
+    arr[i].setAttribute('data-wow-delay', '200ms');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('flink-list-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__flipInY');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('flink-list-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__animated');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('article-sort-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__slideInRight');
+    arr[i].setAttribute('data-wow-duration', '1.5s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('site-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__flipInY');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('site-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__animated');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script></div><script defer src="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/wow.min.js"></script><script defer src="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/wow_init.js"></script><script data-pjax>
+  function butterfly_clock_anzhiyu_injector_config(){
+    var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+    var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img class="entered loading" id="card-clock-loading" src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading"/></div></div></div></div></div>';
+    console.log('已挂载butterfly_clock_anzhiyu')
+    if(parent_div_git) {
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var qweather_key = '695758cf7806402a9519355b59810fcb';
+  var gaud_map_key = '7d51e84627335448e294a26dd2249a2a';
+  var baidu_ak_key = 'undefined';
+  var flag = 0;
+  var clock_rectangle = '112.982279,28.19409';
+  var clock_default_rectangle_enable = 'false';
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  </script><script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script><script data-pjax src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.js"></script><!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body></html>
